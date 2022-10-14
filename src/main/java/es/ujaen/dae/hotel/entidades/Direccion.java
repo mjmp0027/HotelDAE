@@ -1,10 +1,10 @@
 package es.ujaen.dae.hotel.entidades;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
+@AllArgsConstructor
 public class Direccion {
     private String pais;
     private String ciudad;

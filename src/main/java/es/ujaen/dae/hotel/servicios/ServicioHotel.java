@@ -58,14 +58,11 @@ public class ServicioHotel {
         }
     }
 
-    public boolean loginCliente(@NotNull String userName, @NotNull String clave) {
-        for (Map.Entry<String, Cliente> entry : clientes.entrySet()) {
-            if (entry.getValue().getUserName().equals(userName) &&
-                    entry.getValue().getContraseña().equals(clave))
-                log.info("Login válido");
-            return true;
-        }
-        return false;
+    public Optional<Cliente> loginCliente(@NotNull String userName, @NotNull String clave) {
+            return Optional
+                    .ofNullable(clientes.get(userName))
+                    .filter((cliente)
+                    ->cliente.getContraseña().equals(clave));
     }
 
     //TODO

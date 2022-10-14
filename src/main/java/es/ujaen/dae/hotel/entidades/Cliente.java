@@ -1,29 +1,25 @@
 package es.ujaen.dae.hotel.entidades;
 
-import es.ujaen.dae.hotel.utils.CodificadorPassword;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import javax.validation.constraints.NotBlank;
 
 @Data
-@NoArgsConstructor
 public class Cliente {
 
     private int id;
 
-    @NotNull
+    @NotBlank
     private String dni;
 
-    @NotNull
+    @NotBlank
     private String nombre;
 
-    @NotNull
+    @NotBlank
     private String userName;
 
-    @NotNull
+    @NotBlank
     private String contraseña;
 
     private Direccion direccion;
@@ -31,21 +27,34 @@ public class Cliente {
     private int tlf;
 
     @Email
+    @NotBlank
     private String email;
 
     private Reserva[] reservas;
 
+    public Cliente(int id, String dni, String nombre, String userName, String contraseña, Direccion direccion, int tlf, String email){
+        this.id = id;
+        this.dni = dni;
+        this.nombre = nombre;
+        this.userName = userName;
+        this.contraseña = contraseña;
+        this.direccion = direccion;
+        this.tlf = tlf;
+        this.email = email;
+    }
 
     public Reserva[] verReservas(){
         return reservas;
     }
+
     public Reserva verReserva(int idReserva){
         return reservas[idReserva];
     }
 
-    public Hotel[] buscarHoteles(Direccion direccion, LocalDateTime fechaIni, LocalDateTime fechaFin){
-        Hotel[] hoteles = new Hotel[10];
-        return hoteles;
+    public boolean claveValida(String clave){
+        if(contraseña.equals(clave))
+            return true;
+        return false;
     }
 
 }
