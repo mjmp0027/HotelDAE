@@ -1,35 +1,42 @@
 package es.ujaen.dae.hotel.entidades;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
 
 @Data
-@NoArgsConstructor
 public class Hotel {
 
     private int id;
 
-    @NotNull
+    @NotBlank
     private String nombre;
 
-    @NotNull
+    @NotBlank
     private Direccion direccion;
 
-    @PositiveOrZero
+    @Positive
     private int numSimp;
 
-    @PositiveOrZero
+    @Positive
     private int numDobl;
 
     private Reserva[] reservasActuales;
 
     private Reserva[] reservasPasadas;
 
-    public Reserva[] verTodasReservas(LocalDateTime fechaIni, LocalDateTime fechaFin){
+    public Hotel(int id, String nombre, Direccion direccion, int numDobl, int numSimp) {
+        this.id = id;
+        this.nombre = nombre;
+        this.direccion = direccion;
+        this.numSimp = numSimp;
+        this.numDobl = numDobl;
+    }
+
+    //TODO
+    public Reserva[] verTodasReservas(LocalDateTime fechaIni, LocalDateTime fechaFin) {
         return reservasActuales;
     }
 

@@ -4,7 +4,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDateTime;
 
@@ -12,20 +14,20 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class Reserva {
 
-    @NotNull
+    @NotBlank
     private String destino;
 
-    @NotNull
+    @NotBlank
     @DateTimeFormat
     private LocalDateTime fechaInicio;
 
-    @NotNull
+    @NotBlank
     @DateTimeFormat
     private LocalDateTime fechaFin;
 
-    @PositiveOrZero
+    @Positive
     private int numHabitacionesSimp;
 
-    @PositiveOrZero
+    @Positive
     private int numHabitacionesDobl;
 }
