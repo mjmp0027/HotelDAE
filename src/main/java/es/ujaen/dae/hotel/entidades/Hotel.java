@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -37,8 +38,12 @@ public class Hotel {
     }
 
     //TODO
-    public List<Reserva> verTodasReservas(LocalDateTime fechaIni, LocalDateTime fechaFin) {
-        return reservasActuales;
+    public List<Reserva> verReservas(LocalDateTime fechaIni, LocalDateTime fechaFin) {
+        List<Reserva> reservas = new ArrayList<>();
+        for (Reserva reservasActuales : reservasActuales) {
+            if (reservasActuales.getFechaInicio() == fechaIni && reservasActuales.getFechaFin() == fechaFin)
+                reservas.add(reservasActuales);
+        }
+        return reservas;
     }
-
 }
