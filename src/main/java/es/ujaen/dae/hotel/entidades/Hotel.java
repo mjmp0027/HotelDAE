@@ -1,9 +1,10 @@
 package es.ujaen.dae.hotel.entidades;
 
 import lombok.Data;
+import org.springframework.scheduling.annotation.Scheduled;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,10 +20,10 @@ public class Hotel {
 
     private Direccion direccion;
 
-    @Positive
+    @PositiveOrZero
     private int numSimp;
 
-    @Positive
+    @PositiveOrZero
     private int numDobl;
 
     private List<Reserva> reservasActuales;
@@ -35,6 +36,8 @@ public class Hotel {
         this.direccion = direccion;
         this.numSimp = numSimp;
         this.numDobl = numDobl;
+        reservasActuales = new ArrayList<>();
+        reservasPasadas = new ArrayList<>();
     }
 
 
@@ -45,5 +48,26 @@ public class Hotel {
                 reservas.add(reservasActuales);
         }
         return reservas;
+    }
+    public void addReserva(Reserva reserva){
+        reservasActuales.add(reserva);
+    }
+
+    public void setNumDobl(int numDobl) {
+        this.numDobl -= numDobl;
+    }
+
+    public void setNumSimp(int numSimp) {
+        this.numSimp -= numSimp;
+    }
+
+
+    //Trabajo Voluntario
+    @Scheduled(cron="0 0 3 * * * ?")
+    public void cambioReservar(){
+        for (Reserva reservasActuale : reservasActuales) {
+            if (reservasActuale.getFechaFin().isBefore(LocalDateTime.now()))
+                reservasPasadas.add(reservasActuale);
+        }
     }
 }

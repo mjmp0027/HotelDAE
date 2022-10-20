@@ -28,10 +28,9 @@ public class ClienteTest {
                 "mjmp0027",
                 clave,
                 direccion,
-                123456789,
+                "657550655",
                 "mjmp0027@ujaen.es"
         );
-
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
         Set<ConstraintViolation<Cliente>> violations = validator.validate(cliente);
 
@@ -54,9 +53,9 @@ public class ClienteTest {
                 "mjmp0027",
                 clave,
                 direccion,
-                123456789,
+                "123456789",
                 "mjmp0027@ujaen.es"
         );
-        Assertions.assertThat(cliente.claveValida(clave)).isTrue();
+        Assertions.assertThat(cliente.claveValida("manuel82")).isTrue();
     }
 }

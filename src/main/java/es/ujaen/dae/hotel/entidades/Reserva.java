@@ -2,12 +2,8 @@ package es.ujaen.dae.hotel.entidades;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDateTime;
 
@@ -15,20 +11,17 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Reserva {
 
-    @NotBlank
-    private Hotel hotel;
+    private Direccion direccion;
 
-    @NotBlank
     @DateTimeFormat
     private LocalDateTime fechaInicio;
 
-    @NotBlank
     @DateTimeFormat
     private LocalDateTime fechaFin;
 
-    @Positive
+    @PositiveOrZero
     private int numHabitacionesSimp;
 
-    @Positive
+    @PositiveOrZero
     private int numHabitacionesDobl;
 }
