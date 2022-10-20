@@ -7,13 +7,11 @@ import es.ujaen.dae.hotel.excepciones.ClienteYaRegistrado;
 import es.ujaen.dae.hotel.excepciones.HotelYaExiste;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
 
 import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
 import java.util.TreeMap;

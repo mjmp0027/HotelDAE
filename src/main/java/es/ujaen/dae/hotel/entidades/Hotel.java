@@ -37,7 +37,7 @@ public class Hotel {
         this.numDobl = numDobl;
     }
 
-    //TODO
+
     public List<Reserva> verReservas(LocalDateTime fechaIni, LocalDateTime fechaFin) {
         List<Reserva> reservas = new ArrayList<>();
         for (Reserva reservasActuales : reservasActuales) {
