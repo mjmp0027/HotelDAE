@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class Hotel {
@@ -23,9 +24,9 @@ public class Hotel {
     @Positive
     private int numDobl;
 
-    private Reserva[] reservasActuales;
+    private List<Reserva> reservasActuales;
 
-    private Reserva[] reservasPasadas;
+    private List<Reserva> reservasPasadas;
 
     public Hotel(int id, String nombre, Direccion direccion, int numDobl, int numSimp) {
         this.id = id;
@@ -36,7 +37,7 @@ public class Hotel {
     }
 
     //TODO
-    public Reserva[] verTodasReservas(LocalDateTime fechaIni, LocalDateTime fechaFin) {
+    public List<Reserva> verTodasReservas(LocalDateTime fechaIni, LocalDateTime fechaFin) {
         return reservasActuales;
     }
 

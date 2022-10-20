@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Data
 public class Cliente {
@@ -30,7 +31,7 @@ public class Cliente {
     @NotBlank
     private String email;
 
-    private Reserva[] reservas;
+    private List<Reserva> reservas;
 
     public Cliente(int id, String dni, String nombre, String userName, String contraseña, Direccion direccion, int tlf, String email){
         this.id = id;
@@ -43,12 +44,12 @@ public class Cliente {
         this.email = email;
     }
 
-    public Reserva[] verReservas(){
+    public List<Reserva> verReservas(){
         return reservas;
     }
 
     public Reserva verReserva(int idReserva){
-        return reservas[idReserva];
+        return reservas.get(idReserva);
     }
 
     public boolean claveValida(String clave){
