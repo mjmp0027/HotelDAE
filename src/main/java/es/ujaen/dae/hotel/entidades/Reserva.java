@@ -1,5 +1,6 @@
 package es.ujaen.dae.hotel.entidades;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -11,11 +12,11 @@ import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDateTime;
 
 @Data
-@NoArgsConstructor
+@AllArgsConstructor
 public class Reserva {
 
     @NotBlank
-    private String destino;
+    private Hotel hotel;
 
     @NotBlank
     @DateTimeFormat
