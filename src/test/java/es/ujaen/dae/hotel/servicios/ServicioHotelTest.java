@@ -47,6 +47,54 @@ public class ServicioHotelTest {
         Assertions.assertThatThrownBy(()-> servicioHotel.altaCliente(cliente))
                 .isInstanceOf(ConstraintViolationException.class);
     }
+    @Test
+    @DirtiesContext(methodMode = MethodMode.AFTER_METHOD)
+    public void testAltaHotel() {
+        Direccion direccion = new Direccion(
+                "España",
+                "Jaen",
+                "SanJuan",
+                19);
+        Hotel hotel = new Hotel(
+                2,
+                "hotel",
+                direccion,
+                20,
+                30
+        );
+        Assertions.assertThatThrownBy(() ->
+        {
+            servicioHotel.altaHotel(hotel);
+        });
+    }
+    @Test
+    @DirtiesContext(methodMode = MethodMode.AFTER_METHOD)
+    public void testAltaYLoginCliente(){
+        String clave = "manuel82";
+        Direccion direccion = new Direccion(
+                "España",
+                "Jaen",
+                "SanJuan",
+                19);
+        Cliente cliente = new Cliente(
+                3,
+                "12345678Q",
+                "Manuel Jesus",
+                "mjmp0027",
+                clave,
+                direccion,
+                123456789,
+                "mjmp0027.es"
+        );
 
+        Cliente cliente= servicioHotel.altaCliente(cliente.getUserName(),cliente.getClave());
+        Optional<Cliente>  clienteLogin = servicioHotel.loginCliente(cliente.getUserName(), clave);
+
+        Assertions.assertThat(clienteLogin.isPresent()).isTrue();
+        Assertions.assertThat(clienteLogin.get()).isEqualTo(cliente);
+
+
+
+    }
 
 }

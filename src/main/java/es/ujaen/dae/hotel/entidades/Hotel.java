@@ -16,7 +16,7 @@ public class Hotel {
     @NotBlank
     private String nombre;
 
-    @NotBlank
+
     private Direccion direccion;
 
     @Positive
