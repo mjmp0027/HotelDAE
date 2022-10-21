@@ -31,6 +31,7 @@ public class ReservaTest {
         LocalDateTime fechaInicio = LocalDateTime.of(2022, 10, 10, 10, 10, 10, 10);
         LocalDateTime fechaFin = LocalDateTime.of(2022, 11, 11, 11, 11, 11, 11);
         Reserva reserva = new Reserva(
+                1,
           direccion,
                 fechaInicio,
                 fechaFin,

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDateTime;
 
@@ -11,6 +12,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Reserva {
 
+    int id;
+
+    @NotNull
     private Direccion direccion;
 
     @DateTimeFormat

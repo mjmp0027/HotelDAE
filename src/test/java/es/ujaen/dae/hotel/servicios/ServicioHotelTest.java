@@ -32,7 +32,7 @@ public class ServicioHotelTest {
         Assertions.assertThat(servicioHotel).isNotNull();
     }
 
-    /*@Test
+    @Test
     @DirtiesContext(methodMode = MethodMode.AFTER_METHOD)
     public void testAltaClienteInvalido(){
         String clave = "manuel82";
@@ -53,10 +53,9 @@ public class ServicioHotelTest {
                 "mjmp0027gmail.com"
         );
 
-        Assertions.assertThatThrownBy(() -> {
-                    servicioHotel.altaCliente(cliente); })
+        Assertions.assertThatThrownBy(() -> servicioHotel.altaCliente(cliente))
                 .isInstanceOf(ConstraintViolationException.class);
-    }*/
+    }
 
     @Test
     @DirtiesContext(methodMode = MethodMode.AFTER_METHOD)
@@ -93,8 +92,8 @@ public class ServicioHotelTest {
                 "mjmp0027",
                 clave,
                 direccion,
-                "123456789",
-                "mjmp0027.es"
+                "657550655",
+                "mjmp@0027.es"
         );
 
         Cliente cliente1 = servicioHotel.altaCliente(cliente);
@@ -125,6 +124,7 @@ public class ServicioHotelTest {
         LocalDateTime fechaFinBuscar = LocalDateTime.of(2022, 10, 9, 11, 11, 11, 11);
 
         Reserva reserva = new Reserva(
+                1,
                 direccion,
                 fechaInicioReserva,
                 fechaFinReserva,
@@ -167,7 +167,7 @@ public class ServicioHotelTest {
                 "mjmp0027",
                 clave,
                 direccionCliente,
-                "123456789",
+                "657550655",
                 "mjmp0027@ujaen.es"
         );
 
@@ -176,6 +176,7 @@ public class ServicioHotelTest {
         LocalDateTime fechaInicioBuscar = LocalDateTime.of(2022, 10, 1, 10, 10, 10, 10);
         LocalDateTime fechaFinBuscar = LocalDateTime.of(2022, 10, 9, 11, 11, 11, 11);
         Reserva reserva = new Reserva(
+                1,
                 direccionHotel,
                 fechaInicioReserva,
                 fechaFinReserva,

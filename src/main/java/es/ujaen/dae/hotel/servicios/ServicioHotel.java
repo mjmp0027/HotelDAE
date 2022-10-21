@@ -10,9 +10,11 @@ import es.ujaen.dae.hotel.excepciones.HotelYaExiste;
 import es.ujaen.dae.hotel.excepciones.ReservaNoDisponible;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import javax.annotation.PostConstruct;
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ import java.util.TreeMap;
 
 @Service
 @Slf4j
+@Validated
 public class ServicioHotel {
     Map<String, Cliente> clientes;
     Map<String, Hotel> hoteles;
@@ -97,12 +100,12 @@ public class ServicioHotel {
     }
 
 
-    boolean hacerReserva(Cliente cliente, Direccion direccion, LocalDateTime fechaIni, LocalDateTime fechaFin, int numDoble, int numSimple) {
+    boolean hacerReserva(@NotNull @Valid Cliente cliente, Direccion direccion, LocalDateTime fechaIni, LocalDateTime fechaFin, int numDoble, int numSimple) {
 
         List<Hotel> listaHoteles = buscarHoteles(direccion, fechaIni, fechaFin);
         //Suponemos que se queda con el primer hotel que hay en esa direccion
         if (listaHoteles.get(0).getNumDobl() >= numDoble && listaHoteles.get(0).getNumSimp() >= numSimple) {
-            Reserva reserva = new Reserva(direccion, fechaIni, fechaFin, numSimple, numDoble);
+            Reserva reserva = new Reserva(1, direccion, fechaIni, fechaFin, numSimple, numDoble);
             cliente.addReserva(reserva);
             listaHoteles.get(0).setNumSimp(numSimple);
             listaHoteles.get(0).setNumDobl(numDoble);

@@ -4,6 +4,7 @@ import lombok.Data;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class Hotel {
     @NotBlank
     private String nombre;
 
-
+    @NotNull
     private Direccion direccion;
 
     @PositiveOrZero
@@ -27,8 +28,10 @@ public class Hotel {
     private int numDobl;
 
     private List<Reserva> reservasActuales;
+    int totalReservasActuales;
 
     private List<Reserva> reservasPasadas;
+    int totalReservasPasadas;
 
     public Hotel(int id, String nombre, Direccion direccion, int numDobl, int numSimp) {
         this.id = id;
@@ -50,6 +53,7 @@ public class Hotel {
         return reservas;
     }
     public void addReserva(Reserva reserva){
+        reserva.setId(totalReservasActuales++);
         reservasActuales.add(reserva);
     }
 

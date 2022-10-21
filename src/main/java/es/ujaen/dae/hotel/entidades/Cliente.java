@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,7 @@ public class Cliente {
     @NotBlank
     private String contraseña;
 
+    @NotNull
     private Direccion direccion;
 
     @Pattern(regexp = ExprReg.TLF)
@@ -36,6 +38,7 @@ public class Cliente {
     private String email;
 
     private List<Reserva> reservas;
+    int totalReservas;
 
     public Cliente(int id, String dni, String nombre, String userName, String contraseña, Direccion direccion, String tlf, String email){
         this.id = id;
@@ -62,6 +65,7 @@ public class Cliente {
     }
 
     public void addReserva(Reserva reserva){
+        reserva.setId(totalReservas++);
         reservas.add(reserva);
     }
 
