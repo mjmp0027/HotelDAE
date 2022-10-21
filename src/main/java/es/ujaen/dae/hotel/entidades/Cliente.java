@@ -2,6 +2,7 @@ package es.ujaen.dae.hotel.entidades;
 
 import es.ujaen.dae.hotel.utils.ExprReg;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -11,63 +12,62 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@RequiredArgsConstructor
 public class Cliente {
 
     private int id;
 
     @NotBlank
     @Pattern(regexp = ExprReg.DNI)
-    private String dni;
+    private final String dni;
 
     @NotBlank
-    private String nombre;
+    private final String nombre;
 
     @NotBlank
-    private String userName;
+    private final String userName;
 
     @NotBlank
-    private String contraseña;
+    private final String contraseña;
 
     @NotNull
-    private Direccion direccion;
+    private final Direccion direccion;
 
     @Pattern(regexp = ExprReg.TLF)
-    private String tlf;
+    private final String tlf;
 
     @Email
-    private String email;
+    private final String email;
 
-    private List<Reserva> reservas;
-    int totalReservas;
+    private List<Reserva> reservas = new ArrayList<>();
+    private int totalReservas = 0;
 
-    public Cliente(int id, String dni, String nombre, String userName, String contraseña, Direccion direccion, String tlf, String email){
-        this.id = id;
-        this.dni = dni;
-        this.nombre = nombre;
-        this.userName = userName;
-        this.contraseña = contraseña;
-        this.direccion = direccion;
-        this.tlf = tlf;
-        this.email = email;
-        reservas = new ArrayList<>();
-    }
+//    public Cliente(int id, String dni, String nombre, String userName, String contraseña, Direccion direccion, String tlf, String email){
+//        this.id = id;
+//        this.dni = dni;
+//        this.nombre = nombre;
+//        this.userName = userName;
+//        this.contraseña = contraseña;
+//        this.direccion = direccion;
+//        this.tlf = tlf;
+//        this.email = email;
+//        reservas = new ArrayList<>();
+//    }
 
-    public List<Reserva> verReservas(){
+    public List<Reserva> verReservas() {
         return reservas;
     }
 
-    public Reserva verReserva(int idReserva){
+    public Reserva verReserva(int idReserva) {
         return reservas.get(idReserva);
     }
 
-    public boolean claveValida(String clave){
+    public boolean claveValida(String clave) {
         return contraseña.equals(clave);
     }
 
-    public void addReserva(Reserva reserva){
+    public void addReserva(Reserva reserva) {
         reserva.setId(totalReservas++);
         reservas.add(reserva);
     }
-
-
 }

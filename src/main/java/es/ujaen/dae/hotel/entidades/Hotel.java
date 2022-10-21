@@ -28,10 +28,10 @@ public class Hotel {
     private int numDobl;
 
     private List<Reserva> reservasActuales;
-    int totalReservasActuales;
+    private int totalReservasActuales = 0;
 
     private List<Reserva> reservasPasadas;
-    int totalReservasPasadas;
+    private int totalReservasPasadas = 0;
 
     public Hotel(int id, String nombre, Direccion direccion, int numDobl, int numSimp) {
         this.id = id;
