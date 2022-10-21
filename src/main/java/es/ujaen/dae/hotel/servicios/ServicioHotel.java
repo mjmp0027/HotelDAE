@@ -35,12 +35,11 @@ public class ServicioHotel {
         numHoteles = 0;
         //Solo vamos a ser tres administradores
         Administrador manuel = new Administrador("mjmp", "clave1");
-        Administrador carlos = new Administrador("cgh", "clave2");
+        Administrador carlos = new Administrador("cgr", "clave2");
         Administrador maria = new Administrador("mhm", "clave3");
         administradores.put(manuel.getUserName(), manuel);
         administradores.put(carlos.getUserName(), carlos);
         administradores.put(maria.getUserName(), maria);
-
     }
 
     public Cliente altaCliente(@NotNull @Valid Cliente cliente) throws ClienteNoRegistrado {
@@ -84,10 +83,8 @@ public class ServicioHotel {
 //                .ofNullable(clientes.get(userName))
 //                .filter((cliente)
 //                        -> cliente.claveValida(clave));
-
     }
-
-
+    
     public List<Hotel> buscarHoteles(Direccion direccion, LocalDateTime fechaIni, LocalDateTime fechaFin) {
         List<Hotel> listaHoteles = new ArrayList<>();
         for (Map.Entry<Integer, Hotel> hoteles : hoteles.entrySet()) {
@@ -105,11 +102,9 @@ public class ServicioHotel {
                 }
             }
         }
-        log.info("Lista hoteles: " + listaHoteles.get(0));
         return listaHoteles;
     }
-
-
+    
     boolean hacerReserva(@NotNull @Valid Cliente cliente, Direccion direccion, LocalDateTime fechaIni, LocalDateTime fechaFin, int numDoble, int numSimple) {
 
         List<Hotel> listaHoteles = buscarHoteles(direccion, fechaIni, fechaFin);

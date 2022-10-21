@@ -9,6 +9,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Data
@@ -55,7 +56,7 @@ public class Cliente {
 //    }
 
     public List<Reserva> verReservas() {
-        return reservas;
+        return Collections.unmodifiableList(reservas);
     }
 
     public Reserva verReserva(int idReserva) {
