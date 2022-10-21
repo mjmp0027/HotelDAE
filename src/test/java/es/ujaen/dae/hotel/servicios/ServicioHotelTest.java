@@ -8,14 +8,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.MethodMode;
 
-import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
-import javax.validation.Validation;
-import javax.validation.Validator;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 
 @SpringBootTest(classes = es.ujaen.dae.hotel.HotelDaeApp.class)
@@ -31,7 +26,7 @@ public class ServicioHotelTest {
 
     @Test
     @DirtiesContext(methodMode = MethodMode.AFTER_METHOD)
-    public void testAltaClienteInvalido(){
+    public void testAltaClienteInvalido() {
         String clave = "manuel82";
         Direccion direccion = new Direccion(
                 "España",
@@ -40,7 +35,6 @@ public class ServicioHotelTest {
                 19);
 
         Cliente cliente = new Cliente(
-
                 "12345678Q",
                 "Manuel Jesus",
                 "mjmp0027",
@@ -49,7 +43,6 @@ public class ServicioHotelTest {
                 "657550655",
                 "mjmp0027gmail.com"
         );
-        Administrador administrador = new Administrador("erh", "jjsk");
 
         Assertions.assertThatThrownBy(() -> servicioHotel.altaCliente(cliente))
                 .isInstanceOf(ConstraintViolationException.class);
@@ -57,7 +50,7 @@ public class ServicioHotelTest {
 
     @Test
     @DirtiesContext(methodMode = MethodMode.AFTER_METHOD)
-    public void testAltaHotel() {
+    public void testAltaHotel() throws Exception {
         Direccion direccion = new Direccion(
                 "España",
                 "Jaen",
@@ -70,8 +63,10 @@ public class ServicioHotelTest {
                 20,
                 30
         );
-        /*Hotel hotel1 = servicioHotel.altaHotel(hotel);
-        Assertions.assertThat(hotel1).isNotNull();*/
+        
+        Administrador administrador = new Administrador("mjmp", "clave1");
+        Hotel hotel1 = servicioHotel.altaHotel(hotel, administrador);
+        Assertions.assertThat(hotel1).isNotNull();
     }
 
     @Test
@@ -92,6 +87,7 @@ public class ServicioHotelTest {
                 "657550655",
                 "mjmp@0027.es"
         );
+
         Cliente cliente1 = servicioHotel.altaCliente(cliente);
         Cliente clienteLogin = servicioHotel.loginCliente(cliente.getUserName(), "manuel82")
                 .orElseThrow(() -> new Exception("Cliente vacio"));
@@ -102,7 +98,7 @@ public class ServicioHotelTest {
 
     @Test
     @DirtiesContext(methodMode = MethodMode.AFTER_METHOD)
-    public void testBuscarHoteles() {
+    public void testBuscarHoteles() throws Exception {
         Direccion direccion = new Direccion(
                 "España",
                 "Jaen",
@@ -115,6 +111,7 @@ public class ServicioHotelTest {
                 20,
                 30
         );
+
         LocalDateTime fechaInicioReserva = LocalDateTime.of(2022, 10, 10, 10, 10, 10, 10);
         LocalDateTime fechaFinReserva = LocalDateTime.of(2022, 11, 11, 11, 11, 11, 11);
         LocalDateTime fechaInicioBuscar = LocalDateTime.of(2022, 10, 1, 10, 10, 10, 10);
@@ -126,11 +123,12 @@ public class ServicioHotelTest {
                 fechaFinReserva,
                 1,
                 2);
-        /*Hotel hotel1 = servicioHotel.altaHotel(hotel);
+
+        Administrador administrador = new Administrador("cgr", "clave2");
+        Hotel hotel1 = servicioHotel.altaHotel(hotel, administrador);
         hotel1.addReserva(reserva);
         List<Hotel> listaHoteles = servicioHotel.buscarHoteles(direccion, fechaInicioBuscar, fechaFinBuscar);
-
-        Assertions.assertThat(listaHoteles).hasSize(1);*/
+        Assertions.assertThat(listaHoteles).hasSize(1);
     }
 
     @Test
@@ -176,16 +174,14 @@ public class ServicioHotelTest {
                 fechaFinReserva,
                 1,
                 2);
+
         Cliente altaCliente = servicioHotel.altaCliente(cliente);
         Cliente loginCliente = servicioHotel.loginCliente(altaCliente.getUserName(), "manuel82")
                 .orElseThrow(() -> new Exception("Cliente vacio"));
-        /*Hotel hotel1 = servicioHotel.altaHotel(hotel);
+        Administrador administrador = new Administrador("mhm", "clave3");
+        Hotel hotel1 = servicioHotel.altaHotel(hotel, administrador);
         hotel1.addReserva(reserva);
         boolean reservaRealizada = servicioHotel.hacerReserva(loginCliente, direccionHotel, fechaInicioBuscar, fechaFinBuscar, 2, 1);
-
-        Assertions.assertThat(reservaRealizada).isTrue();*/
-
+        Assertions.assertThat(reservaRealizada).isTrue();
     }
-
-
 }

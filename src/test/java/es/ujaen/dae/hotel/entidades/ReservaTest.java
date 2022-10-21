@@ -10,33 +10,25 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 public class ReservaTest {
-    public ReservaTest(){
+    public ReservaTest() {
 
     }
 
     @Test
-    void TestValidacionReserva(){
+    void TestValidacionReserva() {
         Direccion direccion = new Direccion(
                 "España",
                 "Jaen",
                 "SanJuan",
                 19);
-        Hotel hotel = new Hotel(
-                2,
-                "hotel",
-                direccion,
-                20,
-                30
-        );
         LocalDateTime fechaInicio = LocalDateTime.of(2022, 10, 10, 10, 10, 10, 10);
         LocalDateTime fechaFin = LocalDateTime.of(2022, 11, 11, 11, 11, 11, 11);
         Reserva reserva = new Reserva(
-                1,
-          direccion,
+                direccion,
                 fechaInicio,
                 fechaFin,
-        1,
-        2);
+                1,
+                2);
 
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
         Set<ConstraintViolation<Reserva>> violations = validator.validate(reserva);

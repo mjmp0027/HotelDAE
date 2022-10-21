@@ -22,7 +22,6 @@ public class ClienteTest {
                19);
 
         Cliente cliente = new Cliente(
-
                 "12345678Q",
                 "Manuel Jesus",
                 "mjmp0027",
@@ -47,7 +46,6 @@ public class ClienteTest {
                 19);
 
         Cliente cliente = new Cliente(
-
                 "12345678Q",
                 "Manuel Jesus",
                 "mjmp0027",
