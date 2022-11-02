@@ -43,7 +43,6 @@ public class Hotel {
         reservasPasadas = new ArrayList<>();
     }
 
-
     public List<Reserva> verReservas(LocalDateTime fechaIni, LocalDateTime fechaFin) {
         List<Reserva> reservas = new ArrayList<>();
         for (Reserva reservasActuales : reservasActuales) {
