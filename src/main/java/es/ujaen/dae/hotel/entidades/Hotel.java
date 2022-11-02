@@ -3,6 +3,9 @@ package es.ujaen.dae.hotel.entidades;
 import lombok.Data;
 import org.springframework.scheduling.annotation.Scheduled;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
@@ -10,9 +13,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Data
 public class Hotel {
 
+    @Id
     private int id;
 
     @NotBlank
@@ -27,9 +32,11 @@ public class Hotel {
     @PositiveOrZero
     private int numDobl;
 
+    @JoinColumn(name="id_hotel")
     private List<Reserva> reservasActuales;
     private int totalReservasActuales = 0;
 
+    @JoinColumn(name="id_hotel")
     private List<Reserva> reservasPasadas;
     private int totalReservasPasadas = 0;
 

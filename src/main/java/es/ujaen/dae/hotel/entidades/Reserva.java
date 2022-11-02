@@ -5,14 +5,17 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
 @RequiredArgsConstructor
-public class Reserva {
+public class Reserva implements Serializable {
 
+    @Id
     int id;
 
     @NotNull

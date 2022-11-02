@@ -4,21 +4,25 @@ import es.ujaen.dae.hotel.utils.ExprReg;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.validation.constraints.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 @Data
 @RequiredArgsConstructor
-public class Cliente {
+public class Cliente implements Serializable {
 
+    @Id
+    @NotNull
     private int id;
 
     @NotBlank
+    @Size(min=9, max=9)
     @Pattern(regexp = ExprReg.DNI)
     private final String dni;
 
@@ -40,6 +44,7 @@ public class Cliente {
     @Email
     private final String email;
 
+    @JoinColumn(name="id")
     private List<Reserva> reservas = new ArrayList<>();
     private int totalReservas = 0;
 
