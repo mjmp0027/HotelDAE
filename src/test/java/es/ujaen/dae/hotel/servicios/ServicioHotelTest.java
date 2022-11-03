@@ -25,7 +25,6 @@ public class ServicioHotelTest {
     }
 
     @Test
-    @DirtiesContext(methodMode = MethodMode.AFTER_METHOD)
     public void testAltaClienteInvalido() {
         String clave = "manuel82";
         Direccion direccion = new Direccion(
@@ -49,7 +48,6 @@ public class ServicioHotelTest {
     }
 
     @Test
-    @DirtiesContext(methodMode = MethodMode.AFTER_METHOD)
     public void testAltaHotel() throws Exception {
         Direccion direccion = new Direccion(
                 "España",
@@ -94,6 +92,7 @@ public class ServicioHotelTest {
 
         Assertions.assertThat(clienteLogin).isNotNull();
         Assertions.assertThat(clienteLogin).isEqualTo(cliente1);
+
     }
 
     @Test

@@ -23,7 +23,7 @@ public class ClienteTest {
 
         Cliente cliente = new Cliente(
                 "12345678Q",
-                "Manuel Jesus",
+                "Manuel Jesu ºs",
                 "mjmp0027",
                 clave,
                 direccion,
