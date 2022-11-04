@@ -4,9 +4,7 @@ import es.ujaen.dae.hotel.utils.ExprReg;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
+import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -15,6 +13,7 @@ import java.util.List;
 
 @Data
 @RequiredArgsConstructor
+@Entity
 public class Cliente implements Serializable {
 
     @Id
@@ -36,6 +35,7 @@ public class Cliente implements Serializable {
     private final String contraseña;
 
     @NotNull
+    @OneToOne
     private final Direccion direccion;
 
     @Pattern(regexp = ExprReg.TLF)
@@ -45,20 +45,10 @@ public class Cliente implements Serializable {
     private final String email;
 
     @JoinColumn(name="id")
+    @OneToMany
     private List<Reserva> reservas = new ArrayList<>();
     private int totalReservas = 0;
 
-//    public Cliente(int id, String dni, String nombre, String userName, String contraseña, Direccion direccion, String tlf, String email){
-//        this.id = id;
-//        this.dni = dni;
-//        this.nombre = nombre;
-//        this.userName = userName;
-//        this.contraseña = contraseña;
-//        this.direccion = direccion;
-//        this.tlf = tlf;
-//        this.email = email;
-//        reservas = new ArrayList<>();
-//    }
 
     public List<Reserva> verReservas() {
         return Collections.unmodifiableList(reservas);
