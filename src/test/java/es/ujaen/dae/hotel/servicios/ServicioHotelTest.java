@@ -28,6 +28,7 @@ public class ServicioHotelTest {
     public void testAltaClienteInvalido() {
         String clave = "manuel82";
         Direccion direccion = new Direccion(
+                1,
                 "España",
                 "Jaen",
                 "SanJuan",
@@ -50,6 +51,7 @@ public class ServicioHotelTest {
     @Test
     public void testAltaHotel() throws Exception {
         Direccion direccion = new Direccion(
+                1,
                 "España",
                 "Jaen",
                 "SanJuan",
@@ -72,6 +74,7 @@ public class ServicioHotelTest {
     public void testAltaYLoginCliente() throws Exception {
         String clave = "manuel82";
         Direccion direccion = new Direccion(
+                1,
                 "España",
                 "Jaen",
                 "SanJuan",
@@ -99,6 +102,7 @@ public class ServicioHotelTest {
     @DirtiesContext(methodMode = MethodMode.AFTER_METHOD)
     public void testBuscarHoteles() throws Exception {
         Direccion direccion = new Direccion(
+                1,
                 "España",
                 "Jaen",
                 "SanJuan",
@@ -126,7 +130,7 @@ public class ServicioHotelTest {
         Administrador administrador = new Administrador("cgr", "clave2");
         Hotel hotel1 = servicioHotel.altaHotel(hotel, administrador);
         hotel1.addReserva(reserva);
-        List<Hotel> listaHoteles = servicioHotel.buscarHoteles(direccion, fechaInicioBuscar, fechaFinBuscar);
+        List<Hotel> listaHoteles = servicioHotel.buscarHoteles(direccion, fechaInicioBuscar, fechaFinBuscar, 1, 2);
         Assertions.assertThat(listaHoteles).hasSize(1);
     }
 
@@ -134,6 +138,7 @@ public class ServicioHotelTest {
     @DirtiesContext(methodMode = MethodMode.AFTER_METHOD)
     public void testHacerReserva() throws Exception {
         Direccion direccionHotel = new Direccion(
+                1,
                 "España",
                 "Jaen",
                 "SanJuan",
@@ -148,6 +153,7 @@ public class ServicioHotelTest {
 
         String clave = "manuel82";
         Direccion direccionCliente = new Direccion(
+                2,
                 "España",
                 "Malaga",
                 "SanJuan",
@@ -180,7 +186,7 @@ public class ServicioHotelTest {
         Administrador administrador = new Administrador("mhm", "clave3");
         Hotel hotel1 = servicioHotel.altaHotel(hotel, administrador);
         hotel1.addReserva(reserva);
-        boolean reservaRealizada = servicioHotel.hacerReserva(loginCliente, direccionHotel, fechaInicioBuscar, fechaFinBuscar, 2, 1);
+        boolean reservaRealizada = servicioHotel.hacerReserva(loginCliente, direccionHotel, fechaInicioBuscar, fechaFinBuscar, 2, 1, hotel1);
         Assertions.assertThat(reservaRealizada).isTrue();
         List<Reserva> reservas = loginCliente.verReservas();
         Assertions.assertThat(reservas).hasSize(1);

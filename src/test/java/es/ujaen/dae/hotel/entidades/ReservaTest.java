@@ -17,6 +17,7 @@ public class ReservaTest {
     @Test
     void TestValidacionReserva() {
         Direccion direccion = new Direccion(
+                1,
                 "España",
                 "Jaen",
                 "SanJuan",
