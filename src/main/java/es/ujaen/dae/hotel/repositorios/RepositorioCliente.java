@@ -27,7 +27,6 @@ public class RepositorioCliente {
 
     public void nuevaReserva(Cliente cliente, Reserva reserva) {
         em.persist(reserva);
-
         cliente = em.merge(cliente);
         cliente.addReserva(reserva);
     }
