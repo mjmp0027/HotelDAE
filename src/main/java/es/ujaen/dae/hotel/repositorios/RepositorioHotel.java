@@ -1,13 +1,19 @@
 package es.ujaen.dae.hotel.repositorios;
 
+import es.ujaen.dae.hotel.entidades.Direccion;
 import es.ujaen.dae.hotel.entidades.Hotel;
+import es.ujaen.dae.hotel.entidades.Reserva;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Repository
@@ -22,26 +28,33 @@ public class RepositorioHotel {
     public Optional<Hotel> buscar(int id) {
         return Optional.ofNullable(em.find(Hotel.class, id));
     }
-    /*      NO SE SI TIENE SENTIDO
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public Optional<Hotel> buscaryBloquear(String id) {
-        return Optional.ofNullable(em.find(Hotel.class, id, LockModeType.PESSIMISTIC_WRITE));
-    }
-    */
+
 
     public void guardar(Hotel hotel) {
         em.persist(hotel);
     }
 
-    /*public List<Hotel> buscarHoteles(Direccion direccion, LocalDateTime fechaIni, LocalDateTime fechaFin, int numDoble, int numSimple){
-        List<Hotel> hotels = null;
+    public List<Hotel> buscarHoteles(Direccion direccion, int numDoble, int numSimple){
+        List<Hotel> hoteles = new ArrayList<>();
         try{
-            Query q = em.createQuery("Select h from Hotel h where h.direccion=:direccion", Hotel.class);
+            Query q = em.createQuery("Select h from Hotel h where h.direccion=:direccion " +
+                                    "and h.numDoble>:numDoble and h.numSimple>:numSimple", Hotel.class);
+            q.setParameter("numSimple", numSimple);
+            q.setParameter("numDoble", numDoble);
             q.setParameter("direccion", direccion);
-            hotels = (List<Hotel>) q.getResultList();
+            hoteles = q.getResultList();
         }catch (Exception e){
             logger.log(Level.SEVERE, e.getMessage(), e);
         }
-        return hotels;
-    }*/
+        return hoteles;
+    }
+
+    public void nuevaReserva(Hotel hotel, Reserva reserva /*Cliente cliente*/){
+        em.persist(reserva);
+//        cliente = em.merge(cliente);
+        hotel = em.merge(hotel);
+//        cliente.addReserva(reserva);
+        hotel.addReserva(reserva);
+    }
+
 }
