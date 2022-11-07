@@ -18,6 +18,7 @@ public class Cliente implements Serializable {
 
     @Id
     @NotNull
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @NotBlank
