@@ -83,12 +83,11 @@ public class ServicioHotel {
     }
 
     @Transactional
-    boolean hacerReserva(@NotNull @Valid Cliente cliente, Direccion direccion, LocalDateTime fechaIni, LocalDateTime fechaFin, int numDoble, int numSimple, Hotel hotel) {
+    boolean hacerReserva(@NotNull @Valid Cliente cliente, LocalDateTime fechaIni, LocalDateTime fechaFin, int numDoble, int numSimple, Hotel hotel) {
 
         if (repositorioCliente.buscar(cliente.getDni()).isPresent()) {
-            Reserva reserva = new Reserva(direccion, fechaIni, fechaFin, numSimple, numDoble);
+            Reserva reserva = new Reserva(fechaIni, fechaFin, numSimple, numDoble, cliente);
             repositorioHotel.nuevaReserva(hotel, reserva);
-            repositorioCliente.nuevaReserva(cliente, reserva);
             hotel.setNumSimp(numSimple);
             hotel.setNumDobl(numDoble);
             return true;

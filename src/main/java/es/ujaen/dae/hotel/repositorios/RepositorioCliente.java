@@ -17,18 +17,12 @@ public class RepositorioCliente {
     EntityManager em;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public Optional<Cliente> buscar(String id) {
-        return Optional.ofNullable(em.find(Cliente.class, id));
+    public Optional<Cliente> buscar(String userName) {
+        return Optional.ofNullable(em.find(Cliente.class, userName));
     }
 
     public void guardar(Cliente cliente) {
         em.persist(cliente);
-    }
-
-    public void nuevaReserva(Cliente cliente, Reserva reserva) {
-        em.persist(reserva);
-        cliente = em.merge(cliente);
-        cliente.addReserva(reserva);
     }
 
     public void actualizar(Cliente cliente) {

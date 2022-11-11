@@ -28,7 +28,7 @@ public class ServicioHotelTest {
     public void testAltaClienteInvalido() {
         String clave = "manuel82";
         Direccion direccion = new Direccion(
-                1,
+
                 "España",
                 "Jaen",
                 "SanJuan",
@@ -51,7 +51,7 @@ public class ServicioHotelTest {
     @Test
     public void testAltaHotel() throws Exception {
         Direccion direccion = new Direccion(
-                1,
+
                 "España",
                 "Jaen",
                 "SanJuan",
@@ -74,7 +74,7 @@ public class ServicioHotelTest {
     public void testAltaYLoginCliente() throws Exception {
         String clave = "manuel82";
         Direccion direccion = new Direccion(
-                1,
+
                 "España",
                 "Jaen",
                 "SanJuan",
@@ -102,7 +102,7 @@ public class ServicioHotelTest {
     @DirtiesContext(methodMode = MethodMode.AFTER_METHOD)
     public void testBuscarHoteles() throws Exception {
         Direccion direccion = new Direccion(
-                1,
+
                 "España",
                 "Jaen",
                 "SanJuan",
@@ -114,6 +114,23 @@ public class ServicioHotelTest {
                 20,
                 30
         );
+        String clave = "manuel82";
+        Direccion direccionCliente = new Direccion(
+
+                "España",
+                "Malaga",
+                "SanJuan",
+                19);
+
+        Cliente cliente = new Cliente(
+                "12345678Q",
+                "Manuel Jesus",
+                "mjmp0027",
+                clave,
+                direccionCliente,
+                "657550655",
+                "mjmp0027@ujaen.es"
+        );
 
         LocalDateTime fechaInicioReserva = LocalDateTime.of(2022, 10, 10, 10, 10, 10, 10);
         LocalDateTime fechaFinReserva = LocalDateTime.of(2022, 11, 11, 11, 11, 11, 11);
@@ -121,11 +138,11 @@ public class ServicioHotelTest {
         LocalDateTime fechaFinBuscar = LocalDateTime.of(2022, 10, 9, 11, 11, 11, 11);
 
         Reserva reserva = new Reserva(
-                direccion,
                 fechaInicioReserva,
                 fechaFinReserva,
                 1,
-                2);
+                2,
+                cliente);
 
         Administrador administrador = new Administrador("cgr", "clave2");
         Hotel hotel1 = servicioHotel.altaHotel(hotel, administrador);
@@ -138,7 +155,7 @@ public class ServicioHotelTest {
     @DirtiesContext(methodMode = MethodMode.AFTER_METHOD)
     public void testHacerReserva() throws Exception {
         Direccion direccionHotel = new Direccion(
-                1,
+
                 "España",
                 "Jaen",
                 "SanJuan",
@@ -153,7 +170,7 @@ public class ServicioHotelTest {
 
         String clave = "manuel82";
         Direccion direccionCliente = new Direccion(
-                2,
+
                 "España",
                 "Malaga",
                 "SanJuan",
@@ -174,11 +191,11 @@ public class ServicioHotelTest {
         LocalDateTime fechaInicioBuscar = LocalDateTime.of(2022, 10, 1, 10, 10, 10, 10);
         LocalDateTime fechaFinBuscar = LocalDateTime.of(2022, 10, 9, 11, 11, 11, 11);
         Reserva reserva = new Reserva(
-                direccionHotel,
                 fechaInicioReserva,
                 fechaFinReserva,
                 1,
-                2);
+                2,
+                cliente);
 
         Cliente altaCliente = servicioHotel.altaCliente(cliente);
         Cliente loginCliente = servicioHotel.loginCliente(altaCliente.getUserName(), "manuel82")
@@ -186,9 +203,8 @@ public class ServicioHotelTest {
         Administrador administrador = new Administrador("mhm", "clave3");
         Hotel hotel1 = servicioHotel.altaHotel(hotel, administrador);
         hotel1.addReserva(reserva);
-        boolean reservaRealizada = servicioHotel.hacerReserva(loginCliente, direccionHotel, fechaInicioBuscar, fechaFinBuscar, 2, 1, hotel1);
+        boolean reservaRealizada = servicioHotel.hacerReserva(loginCliente, fechaInicioBuscar, fechaFinBuscar, 2, 1, hotel1);
         Assertions.assertThat(reservaRealizada).isTrue();
-        List<Reserva> reservas = loginCliente.verReservas();
-        Assertions.assertThat(reservas).hasSize(1);
+
     }
 }

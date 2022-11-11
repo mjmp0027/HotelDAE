@@ -49,11 +49,9 @@ public class RepositorioHotel {
         return hoteles;
     }
 
-    public void nuevaReserva(Hotel hotel, Reserva reserva /*Cliente cliente*/){
+    public void nuevaReserva(Hotel hotel, Reserva reserva ){
         em.persist(reserva);
-//        cliente = em.merge(cliente);
         hotel = em.merge(hotel);
-//        cliente.addReserva(reserva);
         hotel.addReserva(reserva);
     }
 

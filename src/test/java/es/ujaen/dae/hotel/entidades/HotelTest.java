@@ -15,7 +15,7 @@ public class HotelTest {
     @Test
     void testValidacionHotel(){
         Direccion direccion = new Direccion(
-                1,
+
                 "España",
                 "Jaen",
                 "SanJuan",
