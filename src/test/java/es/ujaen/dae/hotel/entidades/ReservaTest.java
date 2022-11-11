@@ -16,20 +16,32 @@ public class ReservaTest {
 
     @Test
     void TestValidacionReserva() {
+        String clave = "manuel82";
         Direccion direccion = new Direccion(
-                1,
+
                 "España",
                 "Jaen",
                 "SanJuan",
                 19);
+
+        Cliente cliente = new Cliente(
+                "12345678Q",
+                "Manuel Jesu ºs",
+                "mjmp0027",
+                clave,
+                direccion,
+                "657550655",
+                "mjmp0027@ujaen.es"
+        );
+
         LocalDateTime fechaInicio = LocalDateTime.of(2022, 10, 10, 10, 10, 10, 10);
         LocalDateTime fechaFin = LocalDateTime.of(2022, 11, 11, 11, 11, 11, 11);
         Reserva reserva = new Reserva(
-                direccion,
                 fechaInicio,
                 fechaFin,
                 1,
-                2);
+                2,
+                cliente);
 
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
         Set<ConstraintViolation<Reserva>> violations = validator.validate(reserva);

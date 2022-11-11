@@ -16,7 +16,7 @@ public class ClienteTest {
     void testValidacionCliente(){
         String clave = "manuel82";
         Direccion direccion = new Direccion(
-                1,
+
                "España",
                "Jaen",
                "SanJuan",
@@ -41,7 +41,7 @@ public class ClienteTest {
     void testComprobacionClave(){
         String clave = "manuel82";
         Direccion direccion = new Direccion(
-                1,
+
                 "España",
                 "Jaen",
                 "SanJuan",
