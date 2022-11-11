@@ -19,10 +19,6 @@ public class Reserva implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
 
-    @NotNull
-    @OneToOne
-    private final Direccion direccion;
-
     @DateTimeFormat
     private final LocalDateTime fechaInicio;
 
@@ -34,4 +30,8 @@ public class Reserva implements Serializable {
 
     @PositiveOrZero
     private final int numHabitacionesDobl;
+
+    @ManyToOne
+    @JoinColumn(name = "cliente_ID")
+    private final Cliente cliente;
 }
