@@ -25,8 +25,7 @@ public class Hotel {
     @NotBlank
     private String nombre;
 
-    @OneToOne
-    @JoinColumn(name = "direccion_id")
+    @Embedded
     @NotNull
     private Direccion direccion;
 
@@ -36,8 +35,9 @@ public class Hotel {
     @PositiveOrZero
     private int numDobl;
 
-    @JoinColumn(name="id_hotel")
+
     @OneToMany
+    @JoinColumn(name="hotel_id")
     private List<Reserva> reservasActuales;
     private int totalReservasActuales = 0;
 
@@ -68,10 +68,7 @@ public class Hotel {
         reserva.setId(totalReservasActuales++);
         reservasActuales.add(reserva);
     }
-
-    public List<Reserva> verReservasActuales(){
-        return reservasActuales;
-    }
+    
 
     public void setNumDobl(int numDobl) {
         this.numDobl -= numDobl;
