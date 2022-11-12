@@ -21,7 +21,6 @@ public class HotelTest {
                 "SanJuan",
                 19);
         Hotel hotel = new Hotel(
-                2,
                 "hotel",
                 direccion,
                 20,
