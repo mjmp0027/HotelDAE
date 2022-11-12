@@ -90,8 +90,6 @@ public class ServicioHotel {
         if (repositorioCliente.buscar(cliente.getDni()).isPresent()) {
             Reserva reserva = new Reserva(fechaIni, fechaFin, numSimple, numDoble, cliente);
             repositorioHotel.nuevaReserva(hotel, reserva);
-            hotel.setNumSimp(numSimple);
-            hotel.setNumDobl(numDoble);
             return true;
         }
         return false;
