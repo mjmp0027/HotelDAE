@@ -1,15 +1,13 @@
 package es.ujaen.dae.hotel.servicios;
 
 import es.ujaen.dae.hotel.entidades.*;
-import es.ujaen.dae.hotel.excepciones.ClienteNoRegistrado;
-import es.ujaen.dae.hotel.excepciones.ClienteYaRegistrado;
-import es.ujaen.dae.hotel.excepciones.HotelYaExiste;
-import es.ujaen.dae.hotel.excepciones.ReservaNoDisponible;
+import es.ujaen.dae.hotel.excepciones.*;
 import es.ujaen.dae.hotel.repositorios.RepositorioAdministrador;
 import es.ujaen.dae.hotel.repositorios.RepositorioCliente;
 import es.ujaen.dae.hotel.repositorios.RepositorioHotel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -58,6 +56,14 @@ public class ServicioHotel {
         throw new Exception("Administrador no valido");
     }
 
+    public Administrador altaAdministrador(@NotNull @Valid Administrador administrador) throws AdministradorYaExiste {
+        if(repositorioAdministrador.buscar(administrador.getUserName()).isPresent()){
+            throw new AdministradorYaExiste();
+        }else {
+            repositorioAdministrador.guardar(administrador);
+            return administrador;
+        }
+    }
     @Transactional
     public Optional<Cliente> loginCliente(@NotNull String userName, @NotNull String clave) {
         Optional<Cliente> clienteLogin = repositorioCliente.buscar(userName)
@@ -66,24 +72,20 @@ public class ServicioHotel {
     }
 
     public List<Hotel> buscarHoteles(Direccion direccion, LocalDateTime fechaIni, LocalDateTime fechaFin, int numDoble, int numSimple) {
-        List<Hotel> listaHoteles = repositorioHotel.buscarHoteles(direccion, numDoble, numSimple);
+        List<Hotel> listaHoteles = repositorioHotel.buscarHoteles(direccion);
         List<Hotel> listaHotelesDisp = new ArrayList<>();
         for (Hotel hotel : listaHoteles) {
-            for (int j = 0; j < hotel.getReservasActuales().size(); j++) {
-                Reserva reserva = hotel.getReservasActuales().get(j);
-                if (fechaIni.isBefore(reserva.getFechaInicio()) && fechaFin.isBefore(reserva.getFechaInicio())
-                        || fechaIni.isAfter(reserva.getFechaFin())) {
+            if(hotel.comprobarReserva(fechaIni, fechaFin, numDoble, numSimple)){
                     listaHotelesDisp.add(hotel);
                 } else {
                     throw new ReservaNoDisponible();
                 }
             }
-        }
         return listaHotelesDisp;
     }
 
     @Transactional
-    boolean hacerReserva(@NotNull @Valid Cliente cliente, LocalDateTime fechaIni, LocalDateTime fechaFin, int numDoble, int numSimple, Hotel hotel) {
+    public boolean hacerReserva(@NotNull @Valid Cliente cliente, LocalDateTime fechaIni, LocalDateTime fechaFin, int numDoble, int numSimple, Hotel hotel) {
 
         if (repositorioCliente.buscar(cliente.getDni()).isPresent()) {
             Reserva reserva = new Reserva(fechaIni, fechaFin, numSimple, numDoble, cliente);
@@ -93,5 +95,9 @@ public class ServicioHotel {
             return true;
         }
         return false;
+    }
+    @Scheduled(cron="0 0 3 * * * ?")
+    public void cambioReserva(Hotel hotel){
+        repositorioHotel.cambioReservas(hotel);
     }
 }

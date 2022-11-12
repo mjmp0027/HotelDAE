@@ -1,6 +1,7 @@
 package es.ujaen.dae.hotel.servicios;
 
 import es.ujaen.dae.hotel.entidades.*;
+import es.ujaen.dae.hotel.excepciones.AdministradorYaExiste;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +50,7 @@ public class ServicioHotelTest {
     }
 
     @Test
-    public void testAltaHotel() throws Exception {
+    public void testAltaHotel() throws Exception, AdministradorYaExiste {
         Direccion direccion = new Direccion(
 
                 "España",
@@ -65,7 +66,8 @@ public class ServicioHotelTest {
         );
         
         Administrador administrador = new Administrador("mjmp", "clave1");
-        Hotel hotel1 = servicioHotel.altaHotel(hotel, administrador);
+        Administrador administrador1 = servicioHotel.altaAdministrador(administrador);
+        Hotel hotel1 = servicioHotel.altaHotel(hotel, administrador1);
         Assertions.assertThat(hotel1).isNotNull();
     }
 

@@ -37,11 +37,11 @@ public class Hotel {
 
 
     @OneToMany
-    @JoinColumn(name="hotel_id")
+    @JoinColumn(name = "hotel_id_reservas_actuales")
     private List<Reserva> reservasActuales;
     private int totalReservasActuales = 0;
 
-    @JoinColumn(name="id_hotel")
+    @JoinColumn(name = "hotel_id_reservas_pasadas")
     @OneToMany
     private List<Reserva> reservasPasadas;
     private int totalReservasPasadas = 0;
@@ -56,19 +56,10 @@ public class Hotel {
         reservasPasadas = new ArrayList<>();
     }
 
-    public List<Reserva> verReservas(LocalDateTime fechaIni, LocalDateTime fechaFin) {
-        List<Reserva> reservas = new ArrayList<>();
-        for (Reserva reservasActuales : reservasActuales) {
-            if (reservasActuales.getFechaInicio() == fechaIni && reservasActuales.getFechaFin() == fechaFin)
-                reservas.add(reservasActuales);
-        }
-        return reservas;
-    }
-    public void addReserva(Reserva reserva){
-        reserva.setId(totalReservasActuales++);
+    public void addReserva(Reserva reserva) {
         reservasActuales.add(reserva);
     }
-    
+
 
     public void setNumDobl(int numDobl) {
         this.numDobl -= numDobl;
@@ -80,11 +71,32 @@ public class Hotel {
 
 
     //Trabajo Voluntario
-    @Scheduled(cron="0 0 3 * * * ?")
-    public void cambioReservar(){
+    public void cambioReservar() {
         for (Reserva reservasActuale : reservasActuales) {
             if (reservasActuale.getFechaFin().isBefore(LocalDateTime.now()))
                 reservasPasadas.add(reservasActuale);
         }
+    }
+
+    private boolean comprobarReservaDia(LocalDateTime fechaIni, LocalDateTime fechaFin, int numDoble, int numSimp) {
+        LocalDateTime siguiente = fechaIni;
+        while (siguiente.isBefore(fechaFin)) {
+            if (this.numDobl > numDoble && this.numSimp > numSimp) {
+                return true;
+            }
+            siguiente = fechaIni.plusDays(1);
+        }
+        return false;
+    }
+
+    public boolean comprobarReserva(LocalDateTime fechaIni, LocalDateTime fechaFin, int numDobl, int numSimp) {
+        if (comprobarReservaDia(fechaIni, fechaFin, numDobl, numSimp)) {
+            for (int i = 0; i < reservasActuales.size(); i++) {
+                if (fechaIni.isBefore(reservasActuales.get(i).getFechaInicio()) && fechaFin.isBefore(reservasActuales.get(i).getFechaInicio())
+                        || fechaIni.isAfter(reservasActuales.get(i).getFechaFin()))
+                    return true;
+            }
+        }
+        return false;
     }
 }
