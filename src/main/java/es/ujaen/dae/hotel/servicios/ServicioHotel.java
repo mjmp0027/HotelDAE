@@ -84,6 +84,7 @@ public class ServicioHotel {
         return listaHotelesDisp;
     }
 
+    //TODO revisar
     @Transactional
     public boolean hacerReserva(@NotNull @Valid Cliente cliente, LocalDateTime fechaIni, LocalDateTime fechaFin, int numDoble, int numSimple, Hotel hotel) {
 

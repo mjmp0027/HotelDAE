@@ -9,7 +9,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Data
@@ -35,14 +37,14 @@ public class Hotel {
     private int numDobl;
 
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "hotel_id_reservas_actuales")
     private List<Reserva> reservasActuales;
     private int totalReservasActuales = 0;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "hotel_id_reservas_pasadas")
-    private List<Reserva> reservasPasadas;
+    private Set<Reserva> reservasPasadas;
     private int totalReservasPasadas = 0;
 
     public Hotel(String nombre, Direccion direccion, int numDobl, int numSimp) {
@@ -51,7 +53,7 @@ public class Hotel {
         this.numSimp = numSimp;
         this.numDobl = numDobl;
         reservasActuales = new ArrayList<>();
-        reservasPasadas = new ArrayList<>();
+        reservasPasadas = new HashSet<>();
     }
 
     public void addReserva(Reserva reserva) {
@@ -106,7 +108,7 @@ public class Hotel {
                     reservaDisponible = false;
                     break;
             }
-            dia.plusDays(1);
+            dia = dia.plusDays(1);
         }
         //En el momento que alguna de las comprobaciones devuelva falso reservaDisponible se pone falso
         //y no se vuele a poner a true, por lo que el método devolvería falso.

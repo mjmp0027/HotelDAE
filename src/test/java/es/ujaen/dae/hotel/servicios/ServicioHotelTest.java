@@ -2,6 +2,7 @@ package es.ujaen.dae.hotel.servicios;
 
 import es.ujaen.dae.hotel.entidades.*;
 import es.ujaen.dae.hotel.excepciones.AdministradorYaExiste;
+import es.ujaen.dae.hotel.repositorios.RepositorioHotel;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +64,7 @@ public class ServicioHotelTest {
                 20,
                 30
         );
-        
+
         Administrador administrador = new Administrador("mjmp", "clave1");
         Administrador administrador1 = servicioHotel.altaAdministrador(administrador);
         Hotel hotel1 = servicioHotel.altaHotel(hotel, administrador1);
@@ -143,15 +144,15 @@ public class ServicioHotelTest {
                 30);
 
         LocalDateTime fechaInicioReserva1 = LocalDateTime.of(2022, 10, 1, 10, 10, 10, 10);
-        LocalDateTime fechaFinReserva1 = LocalDateTime.of(2022, 10, 10, 10 ,10, 10, 10);
-        LocalDateTime fechaInicioReserva2 = LocalDateTime.of(2022, 10, 5, 10, 10 ,10 ,10);
+        LocalDateTime fechaFinReserva1 = LocalDateTime.of(2022, 10, 10, 10, 10, 10, 10);
+        LocalDateTime fechaInicioReserva2 = LocalDateTime.of(2022, 10, 5, 10, 10, 10, 10);
         LocalDateTime fechaFinReserva2 = LocalDateTime.of(2022, 10, 15, 10, 10, 10, 10);
         LocalDateTime fechaInicioReserva3 = LocalDateTime.of(2022, 10, 3, 10, 10, 10, 10);
         LocalDateTime fechaFinReserva3 = LocalDateTime.of(2022, 10, 13, 10, 10, 10, 10);
         LocalDateTime fechaInicioReserva4 = LocalDateTime.of(2022, 10, 7, 10, 10, 10, 10);
         LocalDateTime fechaFinReserva4 = LocalDateTime.of(2022, 10, 17, 10, 10, 10, 10);
 
-        LocalDateTime fechaInicioReservaPasada1 = LocalDateTime.of(2022, 1, 1, 10, 10, 10,0);
+        LocalDateTime fechaInicioReservaPasada1 = LocalDateTime.of(2022, 1, 1, 10, 10, 10, 0);
         LocalDateTime fechaFinReservaPasada1 = LocalDateTime.of(2022, 1, 2, 10, 10, 10, 10);
         LocalDateTime fechaInicioReservaPasada2 = LocalDateTime.of(2022, 1, 1, 10, 10, 10, 10);
         LocalDateTime fechaFinReservaPasada2 = LocalDateTime.of(2022, 1, 2, 10, 10, 10, 10);
@@ -163,14 +164,6 @@ public class ServicioHotelTest {
 
         Reserva reservaPasada1 = new Reserva(fechaInicioReservaPasada1, fechaFinReservaPasada1, 1, 2, cliente);
         Reserva reservaPasada2 = new Reserva(fechaInicioReservaPasada2, fechaFinReservaPasada2, 1, 2, cliente);
-
-        hotel1.addReserva(reserva1Hotel1);
-        hotel1.addReserva(reserva2Hotel1);
-        hotel2.addReserva(reserva3Hotel2);
-        hotel2.addReserva(reserva4Hotel2);
-
-        hotel1.addReservaPasada(reservaPasada1);
-        hotel2.addReservaPasada(reservaPasada2);
 
         LocalDateTime fechaInicioReserva = LocalDateTime.of(2022, 10, 10, 10, 10, 10, 10);
         LocalDateTime fechaFinReserva = LocalDateTime.of(2022, 11, 11, 11, 11, 11, 11);
@@ -186,6 +179,13 @@ public class ServicioHotelTest {
         Assertions.assertThat(listaHoteles).hasSize(1);
         servicioHotel.hacerReserva(cliente, fechaInicioReserva, fechaFinReserva, 1, 2, listaHoteles.get(0));
 
+        hotel1.addReserva(reserva1Hotel1);
+        hotel1.addReserva(reserva2Hotel1);
+        hotel2.addReserva(reserva3Hotel2);
+        hotel2.addReserva(reserva4Hotel2);
+
+        hotel1.addReservaPasada(reservaPasada1);
+        hotel2.addReservaPasada(reservaPasada2);
     }
 
     @Test
