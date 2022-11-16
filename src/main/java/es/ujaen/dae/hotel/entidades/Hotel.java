@@ -7,7 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -60,19 +60,16 @@ public class Hotel {
         reservasActuales.add(reserva);
     }
 
-    public void addReservaPasada(Reserva reserva){
-        reservasPasadas.add(reserva);
-    }
 
     //Trabajo Voluntario
-    public void cambioReservar() {
+    public void cambioReservas() {
         for (Reserva reservasActuale : reservasActuales) {
-            if (reservasActuale.getFechaFin().isBefore(LocalDateTime.now()))
+            if (reservasActuale.getFechaFin().isBefore(LocalDate.now()))
                 reservasPasadas.add(reservasActuale);
         }
     }
 
-    private boolean comprobarReservaDia(LocalDateTime dia, int numDobl, int numSimp) {
+    private boolean comprobarReservaDia(LocalDate dia, int numDobl, int numSimp) {
         int totalS = 0;
         int totalD = 0;
         //Compruebo las reservas que coinciden con ese día
@@ -90,18 +87,10 @@ public class Hotel {
         return false;
     }
 
-    public boolean comprobarReserva(LocalDateTime fechaIni, LocalDateTime fechaFin, int numDobl, int numSimp) {
-        LocalDateTime dia = fechaIni;
+    public boolean comprobarReserva(LocalDate fechaIni, LocalDate fechaFin, int numDobl, int numSimp) {
+        LocalDate dia = fechaIni;
         boolean reservaDisponible = true;
 
-        //Comprobar las fechas
-        for (int i = 0; i < reservasActuales.size(); i++) {
-            if (!(fechaIni.isBefore(reservasActuales.get(i).getFechaInicio()) && fechaFin.isBefore(reservasActuales.get(i).getFechaInicio())
-                    || fechaIni.isAfter(reservasActuales.get(i).getFechaFin()))) {
-                    reservaDisponible = false;
-                    break;
-            }
-        }
         //Comprobar las habitaciones
         while (dia.isBefore(fechaFin)) {
             if (!comprobarReservaDia(dia, numDobl, numSimp)) {
@@ -112,7 +101,7 @@ public class Hotel {
         }
         //En el momento que alguna de las comprobaciones devuelva falso reservaDisponible se pone falso
         //y no se vuele a poner a true, por lo que el método devolvería falso.
-        //Si los dos metodos devuelven true, reservaDisponible se mantiene en true
+        //Si el metodo devuelve true, reservaDisponible se mantiene en true
         return reservaDisponible;
     }
 }

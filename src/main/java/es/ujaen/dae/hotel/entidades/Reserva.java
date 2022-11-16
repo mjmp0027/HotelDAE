@@ -1,16 +1,16 @@
 package es.ujaen.dae.hotel.entidades;
 
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.PositiveOrZero;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
-@RequiredArgsConstructor
+@NoArgsConstructor
 @Entity
 public class Reserva implements Serializable {
 
@@ -19,18 +19,26 @@ public class Reserva implements Serializable {
     int id;
 
     @DateTimeFormat
-    private final LocalDateTime fechaInicio;
+    private LocalDate fechaInicio;
 
     @DateTimeFormat
-    private final LocalDateTime fechaFin;
+    private LocalDate fechaFin;
 
     @PositiveOrZero
-    private final int numHabitacionesSimp;
+    private int numHabitacionesSimp;
 
     @PositiveOrZero
-    private final int numHabitacionesDobl;
+    private int numHabitacionesDobl;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "cliente_ID")
-    private final Cliente cliente;
+    private Cliente cliente;
+
+    public Reserva(LocalDate fechaInicio, LocalDate fechaFin, int numHabitacionesSimp, int numHabitacionesDobl, Cliente cliente) {
+        this.fechaInicio = fechaInicio;
+        this.fechaFin = fechaFin;
+        this.numHabitacionesSimp = numHabitacionesSimp;
+        this.numHabitacionesDobl = numHabitacionesDobl;
+        this.cliente = cliente;
+    }
 }

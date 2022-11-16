@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Set;
 
 public class ReservaTest {
@@ -34,8 +34,8 @@ public class ReservaTest {
                 "mjmp0027@ujaen.es"
         );
 
-        LocalDateTime fechaInicio = LocalDateTime.of(2022, 10, 10, 10, 10, 10, 10);
-        LocalDateTime fechaFin = LocalDateTime.of(2022, 11, 11, 11, 11, 11, 11);
+        LocalDate fechaInicio = LocalDate.of(2022, 10, 10);
+        LocalDate fechaFin = LocalDate.of(2022, 11, 11);
         Reserva reserva = new Reserva(
                 fechaInicio,
                 fechaFin,

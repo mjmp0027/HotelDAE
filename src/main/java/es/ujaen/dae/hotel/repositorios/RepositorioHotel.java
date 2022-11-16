@@ -2,7 +2,6 @@ package es.ujaen.dae.hotel.repositorios;
 
 import es.ujaen.dae.hotel.entidades.Direccion;
 import es.ujaen.dae.hotel.entidades.Hotel;
-import es.ujaen.dae.hotel.entidades.Reserva;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,16 +24,15 @@ public class RepositorioHotel {
     EntityManager em;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public Optional<Hotel> buscar(int id) {
+    public Optional<Hotel> buscarHotelPorId(int id) {
         return Optional.ofNullable(em.find(Hotel.class, id));
     }
 
-
-    public void guardar(Hotel hotel) {
+    public void guardarHotel(Hotel hotel) {
         em.persist(hotel);
     }
 
-    public List<Hotel> buscarHoteles(Direccion direccion) {
+    public List<Hotel> buscarHotelesPorDireccion(Direccion direccion) {
         List<Hotel> hoteles = new ArrayList<>();
         try {
             Query q = em.createQuery("Select h from Hotel h where h.direccion=:direccion", Hotel.class);
@@ -46,13 +44,7 @@ public class RepositorioHotel {
         return hoteles;
     }
 
-    public void nuevaReserva(Hotel hotel, Reserva reserva) {
-        em.persist(reserva);
-        hotel = em.merge(hotel);
-        hotel.addReserva(reserva);
-    }
-
-    public void cambioReservas(Hotel hotel) {
-        hotel.cambioReservar();
+    public void actualizarHotel(Hotel hotel){
+        em.merge(hotel);
     }
 }
