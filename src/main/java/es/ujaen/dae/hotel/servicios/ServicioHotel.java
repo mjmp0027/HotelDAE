@@ -42,7 +42,7 @@ public class ServicioHotel {
         }
     }
 
-    public Hotel altaHotel(@NotNull @Valid Hotel hotel, @Valid @NotNull Administrador administrador) throws Exception {
+    public Hotel altaHotel(@NotNull @Valid Hotel hotel, @Valid @NotNull Administrador administrador) throws AdministradorNoValido {
         if (repositorioAdministrador.buscar(administrador.getUserName()).isPresent()) {
             log.info("Hotel con datos: " + hotel + " registrandose");
             if (repositorioHotel.buscar(hotel.getId()).isPresent()) {
@@ -53,7 +53,7 @@ public class ServicioHotel {
                 return hotel;
             }
         }
-        throw new Exception("Administrador no valido");
+        throw new AdministradorNoValido();
     }
 
     public Administrador altaAdministrador(@NotNull @Valid Administrador administrador) throws AdministradorYaExiste {

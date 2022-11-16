@@ -2,7 +2,6 @@ package es.ujaen.dae.hotel.servicios;
 
 import es.ujaen.dae.hotel.entidades.*;
 import es.ujaen.dae.hotel.excepciones.AdministradorYaExiste;
-import es.ujaen.dae.hotel.repositorios.RepositorioHotel;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -190,7 +189,7 @@ public class ServicioHotelTest {
 
     @Test
     @DirtiesContext(methodMode = MethodMode.AFTER_METHOD)
-    public void testHacerReserva() throws Exception {
+    public void testHacerReserva() throws Exception, AdministradorYaExiste {
         Direccion direccionHotel = new Direccion(
 
                 "España",
@@ -225,7 +224,7 @@ public class ServicioHotelTest {
         LocalDateTime fechaInicioReserva = LocalDateTime.of(2022, 10, 10, 10, 10, 10, 10);
         LocalDateTime fechaFinReserva = LocalDateTime.of(2022, 11, 11, 11, 11, 11, 11);
         LocalDateTime fechaInicioBuscar = LocalDateTime.of(2022, 10, 1, 10, 10, 10, 10);
-        LocalDateTime fechaFinBuscar = LocalDateTime.of(2022, 10, 9, 11, 11, 11, 11);
+        LocalDateTime fechaFinBuscar = LocalDateTime.of(2022, 10, 9, 10, 10, 10, 10);
         Reserva reserva = new Reserva(
                 fechaInicioReserva,
                 fechaFinReserva,
@@ -236,8 +235,9 @@ public class ServicioHotelTest {
         Cliente altaCliente = servicioHotel.altaCliente(cliente);
         Cliente loginCliente = servicioHotel.loginCliente(altaCliente.getUserName(), "manuel82")
                 .orElseThrow(() -> new Exception("Cliente vacio"));
-        Administrador administrador = new Administrador("mhm", "clave3");
-        Hotel hotel1 = servicioHotel.altaHotel(hotel, administrador);
+        Administrador administrador1 = new Administrador("cgr00064", "clave1");
+        Administrador administrador10 = servicioHotel.altaAdministrador(administrador1);
+        Hotel hotel1 = servicioHotel.altaHotel(hotel, administrador10);
         hotel1.addReserva(reserva);
         boolean reservaRealizada = servicioHotel.hacerReserva(loginCliente, fechaInicioBuscar, fechaFinBuscar, 2, 1, hotel1);
         Assertions.assertThat(reservaRealizada).isTrue();
