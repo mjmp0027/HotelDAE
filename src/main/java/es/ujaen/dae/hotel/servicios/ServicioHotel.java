@@ -66,13 +66,13 @@ public class ServicioHotel {
     }
     @Transactional
     public Optional<Cliente> loginCliente(@NotNull String userName, @NotNull String clave) {
-        Optional<Cliente> clienteLogin = repositorioCliente.buscar(userName)
+        Optional<Cliente> clienteLogin = repositorioCliente.buscarPorId(userName)
                 .filter((cliente) -> cliente.claveValida(clave));
         return clienteLogin;
     }
 
-    public List<Hotel> buscarHoteles(Direccion direccion, LocalDateTime fechaIni, LocalDateTime fechaFin, int numDoble, int numSimple) {
-        List<Hotel> listaHoteles = repositorioHotel.buscarHoteles(direccion);
+    public List<Hotel> buscarHotelesPorLocalidad(Direccion direccion, LocalDateTime fechaIni, LocalDateTime fechaFin, int numDoble, int numSimple) {
+        List<Hotel> listaHoteles = repositorioHotel.buscarHotelesPorLocalidad(direccion);
         List<Hotel> listaHotelesDisp = new ArrayList<>();
         for (Hotel hotel : listaHoteles) {
             if(hotel.comprobarReserva(fechaIni, fechaFin, numDoble, numSimple)){
@@ -88,7 +88,7 @@ public class ServicioHotel {
     @Transactional
     public boolean hacerReserva(@NotNull @Valid Cliente cliente, LocalDateTime fechaIni, LocalDateTime fechaFin, int numDoble, int numSimple, Hotel hotel) {
 
-        if (repositorioCliente.buscar(cliente.getDni()).isPresent()) {
+        if (repositorioCliente.buscarPorId(cliente.getDni()).isPresent()) {
             Reserva reserva = new Reserva(fechaIni, fechaFin, numSimple, numDoble, cliente);
             repositorioHotel.nuevaReserva(hotel, reserva);
             return true;

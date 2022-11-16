@@ -113,7 +113,7 @@ public class ServicioHotelTest {
     // Buscamos el hotel deseado en las fechas deseadas y comprobamos disponibilidad
     @Test
     @DirtiesContext(methodMode = MethodMode.AFTER_METHOD)
-    public void testBuscarHoteles() throws Exception, AdministradorYaExiste {
+    public void testBuscarHotelesPorLocalidad() throws Exception, AdministradorYaExiste {
 
         String clave = "manuel82";
         Direccion direccionCliente = new Direccion(
@@ -186,7 +186,7 @@ public class ServicioHotelTest {
         servicioHotel.altaAdministrador(administrador);
         servicioHotel.altaHotel(hotel1, administrador);
         servicioHotel.altaHotel(hotel2, administrador);
-        List<Hotel> listaHoteles = servicioHotel.buscarHoteles(direccion1, fechaInicioBuscar, fechaFinBuscar, 1, 2);
+        List<Hotel> listaHoteles = servicioHotel.buscarHotelesPorLocalidad(direccion1, fechaInicioBuscar, fechaFinBuscar, 1, 2);
         Assertions.assertThat(listaHoteles).hasSize(1);
         servicioHotel.hacerReserva(cliente, fechaInicioReserva, fechaFinReserva, 1, 2, listaHoteles.get(0));
 
