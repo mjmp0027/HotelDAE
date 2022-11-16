@@ -13,20 +13,26 @@ import javax.validation.ConstraintViolationException;
 import java.time.LocalDateTime;
 import java.util.List;
 
-
+/**
+ * Test de integración de la aplicación
+ */
 @SpringBootTest(classes = es.ujaen.dae.hotel.HotelDaeApp.class)
 public class ServicioHotelTest {
 
     @Autowired
     ServicioHotel servicioHotel;
 
+    //Accedemos al sistema
     @Test
     public void testAccesoServicioHotel() {
         Assertions.assertThat(servicioHotel).isNotNull();
     }
 
+
+    //Identificación de errores
     @Test
     public void testAltaClienteInvalido() {
+        // Cliente con e-mail incorrecto!!!
         String clave = "manuel82";
         Direccion direccion = new Direccion(
 
@@ -35,6 +41,7 @@ public class ServicioHotelTest {
                 "SanJuan",
                 19);
 
+        //Registramos cliente
         Cliente cliente = new Cliente(
                 "12345678Q",
                 "Manuel Jesus",
@@ -49,6 +56,7 @@ public class ServicioHotelTest {
                 .isInstanceOf(ConstraintViolationException.class);
     }
 
+    //Damos de alta hotel y su dirección
     @Test
     public void testAltaHotel() throws Exception, AdministradorYaExiste {
         Direccion direccion = new Direccion(
@@ -64,12 +72,14 @@ public class ServicioHotelTest {
                 30
         );
 
+        //Creamos administrador
         Administrador administrador = new Administrador("mjmp", "clave1");
         Administrador administrador1 = servicioHotel.altaAdministrador(administrador);
         Hotel hotel1 = servicioHotel.altaHotel(hotel, administrador1);
         Assertions.assertThat(hotel1).isNotNull();
     }
 
+    //Damos de alta al cliente y queda registrado en el sistema
     @Test
     @DirtiesContext(methodMode = MethodMode.AFTER_METHOD)
     public void testAltaYLoginCliente() throws Exception {
@@ -99,6 +109,8 @@ public class ServicioHotelTest {
 
     }
 
+
+    // Buscamos el hotel deseado en las fechas deseadas y comprobamos disponibilidad
     @Test
     @DirtiesContext(methodMode = MethodMode.AFTER_METHOD)
     public void testBuscarHoteles() throws Exception, AdministradorYaExiste {
@@ -187,6 +199,7 @@ public class ServicioHotelTest {
         hotel2.addReservaPasada(reservaPasada2);
     }
 
+    //Realizamos la reserva del cliente
     @Test
     @DirtiesContext(methodMode = MethodMode.AFTER_METHOD)
     public void testHacerReserva() throws Exception, AdministradorYaExiste {
@@ -221,10 +234,13 @@ public class ServicioHotelTest {
                 "mjmp0027@ujaen.es"
         );
 
+        //Fechas de inicio y fin de la reserva
         LocalDateTime fechaInicioReserva = LocalDateTime.of(2022, 10, 10, 10, 10, 10, 10);
         LocalDateTime fechaFinReserva = LocalDateTime.of(2022, 11, 11, 11, 11, 11, 11);
         LocalDateTime fechaInicioBuscar = LocalDateTime.of(2022, 10, 1, 10, 10, 10, 10);
         LocalDateTime fechaFinBuscar = LocalDateTime.of(2022, 10, 9, 10, 10, 10, 10);
+
+        //Creamos la nueva reserva
         Reserva reserva = new Reserva(
                 fechaInicioReserva,
                 fechaFinReserva,
