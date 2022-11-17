@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @Entity
-public class Reserva implements Serializable {
+public class ReservaPasada implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,17 +31,15 @@ public class Reserva implements Serializable {
     private int numHabitacionesDobl;
 
     @ManyToOne
-    @JoinColumn(name = "cliente_ID")
+    @JoinColumn(name = "cliente_idpasado")
     private Cliente cliente;
 
-    public Reserva(LocalDate fechaInicio, LocalDate fechaFin, int numHabitacionesSimp, int numHabitacionesDobl, Cliente cliente) {
-        this.fechaInicio = fechaInicio;
-        this.fechaFin = fechaFin;
-        this.numHabitacionesSimp = numHabitacionesSimp;
-        this.numHabitacionesDobl = numHabitacionesDobl;
-        this.cliente = cliente;
+    public ReservaPasada(Reserva reservaPasada) {
+        this.fechaInicio = reservaPasada.getFechaInicio();
+        this.fechaFin = reservaPasada.getFechaFin();
+        this.numHabitacionesSimp = reservaPasada.getNumHabitacionesSimp();
+        this.numHabitacionesDobl = reservaPasada.getNumHabitacionesDobl();
+        this.cliente = reservaPasada.getCliente();
     }
-    public boolean contieneDia(LocalDate dia) {
-        return dia.isEqual(fechaInicio) || (dia.isAfter(fechaInicio) && dia.isBefore(fechaFin));
-    }
+
 }

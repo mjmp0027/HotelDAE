@@ -8,7 +8,6 @@ import es.ujaen.dae.hotel.repositorios.RepositorioHotel;
 import es.ujaen.dae.hotel.repositorios.RepositorioReserva;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -30,7 +29,6 @@ public class ServicioHotel {
     RepositorioHotel repositorioHotel;
     @Autowired
     RepositorioAdministrador repositorioAdministrador;
-
     @Autowired
     RepositorioReserva repositorioReserva;
 
@@ -88,7 +86,6 @@ public class ServicioHotel {
         return listaHotelesDisp;
     }
 
-    //TODO revisar
     //Realización de la reserva
     @Transactional
     public boolean hacerReserva(@NotNull @Valid Cliente cliente, LocalDate fechaIni, LocalDate fechaFin, int numDoble, int numSimple, Hotel hotel) {
@@ -104,9 +101,24 @@ public class ServicioHotel {
         return false;
     }
 
-    @Scheduled(cron = "0 0 3 * * * ?")
+    //@Scheduled(cron = "0 0 3 * * * ?")
     public void cambioReserva(Hotel hotel) {
-        hotel.cambioReservas();
+        List<Reserva> reservasActuales;
+        reservasActuales = hotel.cambioReservas();
+        for (Reserva reservaActual : reservasActuales){
+            if (reservaActual.getFechaFin().isBefore(LocalDate.now())) {
+                ReservaPasada reservaPasada = new ReservaPasada(reservaActual);
+                repositorioReserva.guardarReservaPasada(reservaPasada);
+                hotel.cambioReserva(reservaPasada);
+            }
+        }
+        repositorioHotel.actualizarHotel(hotel);
+    }
+
+    //Metodo exclusivo para la comprobación del testCambioReserva()
+    public void altaReserva(Reserva reserva, Hotel hotel){
+        repositorioReserva.guardarReserva(reserva);
+        hotel.addReserva(reserva);
         repositorioHotel.actualizarHotel(hotel);
     }
 }

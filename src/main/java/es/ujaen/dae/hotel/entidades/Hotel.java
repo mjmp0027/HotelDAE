@@ -40,12 +40,10 @@ public class Hotel {
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "hotel_id_reservas_actuales")
     private List<Reserva> reservasActuales;
-    private int totalReservasActuales = 0;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "hotel_id_reservas_pasadas")
-    private Set<Reserva> reservasPasadas;
-    private int totalReservasPasadas = 0;
+    private Set<ReservaPasada> reservasPasadas;
 
     public Hotel(String nombre, Direccion direccion, int numDobl, int numSimp) {
         this.nombre = nombre;
@@ -62,18 +60,23 @@ public class Hotel {
 
 
     //Trabajo Voluntario
-    public void cambioReservas() {
-        for (Reserva reservasActuale : reservasActuales) {
-            if (reservasActuale.getFechaFin().isBefore(LocalDate.now()))
-                reservasPasadas.add(reservasActuale);
-        }
+    public List<Reserva> cambioReservas() {
+        List<Reserva> list = new ArrayList<>();
+        list.addAll(reservasActuales);
+
+        return list;
     }
+
+    public void cambioReserva(ReservaPasada reservaPasada) {
+        reservasPasadas.add(reservaPasada);
+    }
+
     //Comprobamos la reserva por día
     private boolean comprobarReservaDia(LocalDate dia, int numDobl, int numSimp) {
         int totalS = 0;
         int totalD = 0;
 
-        for (Reserva reserva: reservasActuales) {
+        for (Reserva reserva : reservasActuales) {
             if (reserva.contieneDia(dia)) {
                 totalS += reserva.getNumHabitacionesSimp();
                 totalD += reserva.getNumHabitacionesDobl();
@@ -82,6 +85,7 @@ public class Hotel {
 
         return (this.numSimp - totalS >= numSimp && this.numDobl - totalD >= numDobl);
     }
+
     //Comprobamos reserva
     public boolean comprobarReserva(LocalDate fechaIni, LocalDate fechaFin, int numDobl, int numSimp) {
         LocalDate dia = fechaIni;
@@ -90,8 +94,8 @@ public class Hotel {
         //Comprobar las habitaciones
         while (dia.isBefore(fechaFin)) {
             if (!comprobarReservaDia(dia, numDobl, numSimp)) {
-                    reservaDisponible = false;
-                    break;
+                reservaDisponible = false;
+                break;
             }
             dia = dia.plusDays(1);
         }
