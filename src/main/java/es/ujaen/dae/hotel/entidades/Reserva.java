@@ -41,4 +41,7 @@ public class Reserva implements Serializable {
         this.numHabitacionesDobl = numHabitacionesDobl;
         this.cliente = cliente;
     }
+    public boolean contieneDia(LocalDate dia) {
+        return dia.isEqual(fechaInicio) || (dia.isAfter(fechaInicio) && dia.isBefore(fechaFin));
+    }
 }

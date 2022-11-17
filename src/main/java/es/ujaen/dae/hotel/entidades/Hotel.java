@@ -72,19 +72,15 @@ public class Hotel {
     private boolean comprobarReservaDia(LocalDate dia, int numDobl, int numSimp) {
         int totalS = 0;
         int totalD = 0;
-        //Compruebo las reservas que coinciden con ese día
-        for (int i = 0; i < reservasActuales.size(); i++) {
-            if (dia.isAfter(reservasActuales.get(i).getFechaInicio())
-                    && dia.isBefore(reservasActuales.get(i).getFechaFin())
-                    || dia.isEqual(reservasActuales.get(i).getFechaInicio())
-                    || dia.isEqual(reservasActuales.get(i).getFechaFin())) {
-                totalS += reservasActuales.get(i).getNumHabitacionesSimp();
-                totalD += reservasActuales.get(i).getNumHabitacionesDobl();
+
+        for (Reserva reserva: reservasActuales) {
+            if (reserva.contieneDia(dia)) {
+                totalS += reserva.getNumHabitacionesSimp();
+                totalD += reserva.getNumHabitacionesDobl();
             }
         }
-        if (this.numSimp - totalS >= numSimp && this.numDobl - totalD >= numDobl)
-            return true;
-        return false;
+
+        return (this.numSimp - totalS >= numSimp && this.numDobl - totalD >= numDobl);
     }
 
     public boolean comprobarReserva(LocalDate fechaIni, LocalDate fechaFin, int numDobl, int numSimp) {
