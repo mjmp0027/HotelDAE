@@ -34,7 +34,7 @@ public class ServicioHotel {
     @Autowired
     RepositorioReserva repositorioReserva;
 
-
+    //Damos de alta el cliente en el sistema
     public Cliente altaCliente(@NotNull @Valid Cliente cliente) throws ClienteNoRegistrado {
         log.info("Cliente con datos: " + cliente + " registrandose");
         if (repositorioCliente.buscarPorUserName(cliente.getDni()).isPresent()) {
@@ -45,7 +45,7 @@ public class ServicioHotel {
             return cliente;
         }
     }
-
+    //Damos de alta el hotel en el sistema
     public Hotel altaHotel(@NotNull @Valid Hotel hotel, @Valid @NotNull Administrador administrador) throws AdministradorNoValido {
         if (repositorioAdministrador.buscarAdminPorUserName(administrador.getUserName()).isPresent()) {
             log.info("Hotel con datos: " + hotel + " registrandose");
@@ -59,7 +59,7 @@ public class ServicioHotel {
         }
         throw new AdministradorNoValido();
     }
-
+    //Damos de alta el administrador en el sistema
     public Administrador altaAdministrador(@NotNull @Valid Administrador administrador) throws AdministradorYaExiste {
         if (repositorioAdministrador.buscarAdminPorUserName(administrador.getUserName()).isPresent()) {
             throw new AdministradorYaExiste();
@@ -68,14 +68,14 @@ public class ServicioHotel {
             return administrador;
         }
     }
-
+    //Hacemos el login del cliente
     @Transactional
     public Optional<Cliente> loginCliente(@NotNull String userName, @NotNull String clave) {
         Optional<Cliente> clienteLogin = repositorioCliente.buscarPorUserName(userName)
                 .filter((cliente) -> cliente.claveValida(clave));
         return clienteLogin;
     }
-
+    //Buscamos el hotel mediante direccion, fechas y tipo
     public List<Hotel> buscarHoteles(Direccion direccion, LocalDate fechaIni, LocalDate fechaFin, int numDoble, int numSimple) {
         List<Hotel> listaHoteles = repositorioHotel.buscarHotelesPorDireccion(direccion);
         List<Hotel> listaHotelesDisp = new ArrayList<>();
@@ -89,6 +89,7 @@ public class ServicioHotel {
     }
 
     //TODO revisar
+    //Realización de la reserva
     @Transactional
     public boolean hacerReserva(@NotNull @Valid Cliente cliente, LocalDate fechaIni, LocalDate fechaFin, int numDoble, int numSimple, Hotel hotel) {
 

@@ -68,7 +68,7 @@ public class Hotel {
                 reservasPasadas.add(reservasActuale);
         }
     }
-
+    //Comprobamos la reserva por día
     private boolean comprobarReservaDia(LocalDate dia, int numDobl, int numSimp) {
         int totalS = 0;
         int totalD = 0;
@@ -82,7 +82,7 @@ public class Hotel {
 
         return (this.numSimp - totalS >= numSimp && this.numDobl - totalD >= numDobl);
     }
-
+    //Comprobamos reserva
     public boolean comprobarReserva(LocalDate fechaIni, LocalDate fechaFin, int numDobl, int numSimp) {
         LocalDate dia = fechaIni;
         boolean reservaDisponible = true;
