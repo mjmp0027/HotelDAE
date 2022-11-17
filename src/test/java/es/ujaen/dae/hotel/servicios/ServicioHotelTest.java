@@ -1,9 +1,6 @@
 package es.ujaen.dae.hotel.servicios;
 
-import es.ujaen.dae.hotel.entidades.Administrador;
-import es.ujaen.dae.hotel.entidades.Cliente;
-import es.ujaen.dae.hotel.entidades.Direccion;
-import es.ujaen.dae.hotel.entidades.Hotel;
+import es.ujaen.dae.hotel.entidades.*;
 import es.ujaen.dae.hotel.excepciones.AdministradorYaExiste;
 import es.ujaen.dae.hotel.excepciones.ClienteNoRegistrado;
 import es.ujaen.dae.hotel.excepciones.ReservaNoDisponible;
@@ -182,7 +179,7 @@ public class ServicioHotelTest {
         Direccion direccion1 = new Direccion(
                 "España",
                 "Jaen",
-                "SanJuan",
+                "BuenaVista",
                 19);
         Direccion direccion2 = new Direccion(
                 "España",
@@ -198,7 +195,6 @@ public class ServicioHotelTest {
 
         LocalDate fechaInicioBuscar = LocalDate.of(2022, 10, 1);
         LocalDate fechaFinBuscar = LocalDate.of(2022, 10, 9);
-
 
         Administrador administrador = new Administrador("cgr", "clave2");
         servicioHotel.altaAdministrador(administrador);
@@ -222,7 +218,7 @@ public class ServicioHotelTest {
     //Realizamos la reserva del cliente
     @Test
     @DirtiesContext(methodMode = MethodMode.AFTER_METHOD)
-    public void testHacerReserva() throws Exception, AdministradorYaExiste {
+    public void testHacerReserva() throws AdministradorYaExiste {
         Direccion direccionHotel = new Direccion(
 
                 "España",
@@ -261,7 +257,7 @@ public class ServicioHotelTest {
 
         Cliente altaCliente = servicioHotel.altaCliente(cliente);
         Cliente loginCliente = servicioHotel.loginCliente(altaCliente.getUserName(), "manuel82")
-                .orElseThrow(() -> new Exception("Cliente vacio"));
+                .orElseThrow(() -> new ClienteNoRegistrado());
         Administrador administrador1 = new Administrador("cgr00064", "clave1");
         Administrador administrador10 = servicioHotel.altaAdministrador(administrador1);
         servicioHotel.altaHotel(hotel, administrador10);
@@ -269,5 +265,66 @@ public class ServicioHotelTest {
         boolean reservaRealizada = servicioHotel.hacerReserva(loginCliente, fechaInicioReserva, fechaFinReserva, 1, 2, listaHoteles.get(0));
         Assertions.assertThat(reservaRealizada).isTrue();
 
+    }
+
+    @Test
+    @DirtiesContext(methodMode = MethodMode.AFTER_METHOD)
+    public void testCambioReserva() throws AdministradorYaExiste {
+
+        Direccion direccionHotel = new Direccion(
+                "España",
+                "Jaen",
+                "SanJuan",
+                19);
+
+        Hotel hotel = new Hotel(
+                "hotel",
+                direccionHotel,
+                20,
+                30
+        );
+
+        String clave = "manuel82";
+        Direccion direccionCliente = new Direccion(
+
+                "España",
+                "Malaga",
+                "SanJuan",
+                19);
+
+        Cliente cliente = new Cliente(
+                "12345678Q",
+                "Manuel Jesus",
+                "mjmp0027",
+                clave,
+                direccionCliente,
+                "657550655",
+                "mjmp0027@ujaen.es"
+        );
+
+        LocalDate inicioReserva1 = LocalDate.of(2022, 3, 1);
+        LocalDate finReserva1 = LocalDate.of(2022, 3, 10);
+        LocalDate inicioReserva2 = LocalDate.of(2022, 4, 15);
+        LocalDate finReserva2 = LocalDate.of(2022, 4, 22);
+        LocalDate inicioReserva3 = LocalDate.of(2023, 5, 1);
+        LocalDate finReserva3 = LocalDate.of(2023, 5, 10);
+
+        Administrador administrador = new Administrador("cgr00064", "clave1");
+
+        servicioHotel.altaAdministrador(administrador);
+        servicioHotel.altaHotel(hotel, administrador);
+        Cliente altaCliente = servicioHotel.altaCliente(cliente);
+
+        Reserva reserva1 = new Reserva(inicioReserva1, finReserva1, 1, 2, altaCliente);
+        Reserva reserva2 = new Reserva(inicioReserva2, finReserva2, 1, 2, altaCliente);
+        Reserva reserva3 = new Reserva(inicioReserva3, finReserva3, 1, 2, altaCliente);
+
+        servicioHotel.altaReserva(reserva1,hotel);
+        servicioHotel.altaReserva(reserva2,hotel);
+        servicioHotel.altaReserva(reserva3,hotel);
+
+        servicioHotel.cambioReserva(hotel);
+
+        Assertions.assertThat(hotel.getReservasPasadas()).hasSize(2);
     }
 }
