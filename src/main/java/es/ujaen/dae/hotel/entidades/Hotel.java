@@ -1,5 +1,6 @@
 package es.ujaen.dae.hotel.entidades;
 
+import es.ujaen.dae.hotel.excepciones.ReservaNoDisponible;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -42,7 +43,7 @@ public class Hotel {
     @JoinColumn(name = "hotel_id_reservas_actuales")
     private List<Reserva> reservasActuales;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "hotel_id_reservas_pasadas")
     private Set<Reserva> reservasPasadas;
 
@@ -56,7 +57,11 @@ public class Hotel {
     }
 
     public void addReserva(Reserva reserva) {
-        reservasActuales.add(reserva);
+        if(comprobarReserva(reserva.getFechaInicio(), reserva.getFechaFin(), reserva.getNumHabitacionesDobl(), reserva.getNumHabitacionesSimp())) {
+            reservasActuales.add(reserva);
+        }else{
+            throw new ReservaNoDisponible();
+        }
     }
 
 
