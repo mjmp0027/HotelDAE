@@ -10,9 +10,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -75,7 +75,7 @@ public class ServicioHotel {
         return clienteLogin;
     }
     //Buscamos el hotel mediante direccion, fechas y tipo
-    //@Transactional
+    @Transactional
     public List<Hotel> buscarHoteles(Direccion direccion, LocalDate fechaIni, LocalDate fechaFin, int numDoble, int numSimple) {
         List<Hotel> listaHoteles = repositorioHotel.buscarHotelesPorDireccion(direccion);
         List<Hotel> listaHotelesDisp = new ArrayList<>();
@@ -89,15 +89,12 @@ public class ServicioHotel {
     }
 
     //Realización de la reserva
-    @Transactional
+    //@Transactional
     public boolean hacerReserva(@NotNull @Valid Cliente cliente, LocalDate fechaIni, LocalDate fechaFin, int numDoble, int numSimple, Hotel hotel) {
 
         if (repositorioCliente.buscarPorUserName(cliente.getUserName()).isPresent()) {
                 Reserva reserva = new Reserva(fechaIni, fechaFin, numSimple, numDoble, cliente);
-                repositorioReserva.guardarReserva(reserva);
-                hotel.addReserva(reserva);
-                repositorioHotel.actualizarHotel(hotel);
-
+                altaReserva(reserva, hotel);
             return true;
         }
         return false;

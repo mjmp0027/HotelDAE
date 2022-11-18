@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.MethodMode;
+import org.springframework.test.context.ActiveProfiles;
 
 import javax.validation.ConstraintViolationException;
 import java.time.LocalDate;
@@ -19,6 +20,7 @@ import java.util.List;
  * Test de integración de la aplicación
  */
 @SpringBootTest(classes = es.ujaen.dae.hotel.HotelDaeApp.class)
+@ActiveProfiles(profiles = {"test"})
 public class ServicioHotelTest {
 
     @Autowired
@@ -84,7 +86,7 @@ public class ServicioHotelTest {
     //Damos de alta al cliente y queda registrado en el sistema
     @Test
     @DirtiesContext(methodMode = MethodMode.AFTER_METHOD)
-    public void testAltaYLoginCliente() throws Exception {
+    public void testAltaYLoginCliente() {
         String clave = "manuel82";
         Direccion direccion = new Direccion(
 
@@ -104,7 +106,7 @@ public class ServicioHotelTest {
 
         Cliente cliente1 = servicioHotel.altaCliente(cliente);
         Cliente clienteLogin = servicioHotel.loginCliente(cliente.getUserName(), "manuel82")
-                .orElseThrow(() -> new Exception("Cliente vacio"));
+                .orElseThrow(() -> new ClienteNoRegistrado());
 
         Assertions.assertThat(clienteLogin).isNotNull();
         Assertions.assertThat(clienteLogin).isEqualTo(cliente1);
@@ -187,8 +189,8 @@ public class ServicioHotelTest {
                 "SanPablo",
                 21);
 
-        Hotel hotel1 = new Hotel(
-                "hotel1",
+        Hotel hotel = new Hotel(
+                "hotel4",
                 direccion1,
                 10,
                 15);
@@ -198,7 +200,7 @@ public class ServicioHotelTest {
 
         Administrador administrador = new Administrador("cgr", "clave2");
         servicioHotel.altaAdministrador(administrador);
-        servicioHotel.altaHotel(hotel1, administrador);
+        servicioHotel.altaHotel(hotel, administrador);
         Cliente altaCliente = servicioHotel.altaCliente(cliente);
         Cliente loginCliente = servicioHotel.loginCliente(altaCliente.getUserName(), clave).orElseThrow(() -> new ClienteNoRegistrado());
 
@@ -210,7 +212,7 @@ public class ServicioHotelTest {
 //        Assertions.assertThat(listaHoteles2).hasSize(1);
         //Intentamos buscar hoteles pero esta vez no habrá habitaciones disponibles
         Assertions.assertThatExceptionOfType(ReservaNoDisponible.class).isThrownBy(() -> servicioHotel.buscarHoteles(direccion1, fechaInicioBuscar, fechaFinBuscar, 5, 5));
-        //Intentamos buscar hoteles en una direccion donde no hay ningún hotel, aunque si quedan habitaciones
+        //Intentamos buscar hoteles en una direccion donde no hay ningún hotel
         Assertions.assertThatExceptionOfType(ReservaNoDisponible.class).isThrownBy(() -> servicioHotel.buscarHoteles(direccion2, fechaInicioBuscar, fechaFinBuscar, 1, 2));
 
     }
@@ -251,19 +253,28 @@ public class ServicioHotelTest {
         );
 
         //Fechas de inicio y fin de la reserva
-        LocalDate fechaInicioReserva = LocalDate.of(2022, 10, 1);
-        LocalDate fechaFinReserva = LocalDate.of(2022, 10, 9);
-
+        LocalDate fechaInicioReserva1 = LocalDate.of(2022, 10, 1);
+        LocalDate fechaFinReserva1 = LocalDate.of(2022, 10, 9);
+        LocalDate fechaInicioReserva2 = LocalDate.of(2022, 10, 3);
+        LocalDate fechaFinReserva2 = LocalDate.of(2022, 10, 11);
 
         Cliente altaCliente = servicioHotel.altaCliente(cliente);
         Cliente loginCliente = servicioHotel.loginCliente(altaCliente.getUserName(), "manuel82")
                 .orElseThrow(() -> new ClienteNoRegistrado());
+
         Administrador administrador1 = new Administrador("cgr00064", "clave1");
         Administrador administrador10 = servicioHotel.altaAdministrador(administrador1);
         servicioHotel.altaHotel(hotel, administrador10);
-        List<Hotel> listaHoteles = servicioHotel.buscarHoteles(direccionHotel, fechaInicioReserva, fechaFinReserva, 1, 2);
-        boolean reservaRealizada = servicioHotel.hacerReserva(loginCliente, fechaInicioReserva, fechaFinReserva, 1, 2, listaHoteles.get(0));
+
+        List<Hotel> listaHoteles1 = servicioHotel.buscarHoteles(direccionHotel, fechaInicioReserva1, fechaFinReserva1, 1, 2);
+        boolean reservaRealizada = servicioHotel.hacerReserva(loginCliente, fechaInicioReserva1, fechaFinReserva1, 1, 2, listaHoteles1.get(0));
+
         Assertions.assertThat(reservaRealizada).isTrue();
+
+        List<Hotel> listaHoteles2 = servicioHotel.buscarHoteles(direccionHotel, fechaInicioReserva2, fechaFinReserva2, 1, 2);
+        boolean reservaRealizada2 = servicioHotel.hacerReserva(altaCliente, fechaInicioReserva2, fechaFinReserva2, 1, 2, listaHoteles2.get(0));
+
+        Assertions.assertThat(reservaRealizada2).isTrue();
 
     }
 
