@@ -95,6 +95,7 @@ public class ServicioHotel {
         if (repositorioCliente.buscarPorUserName(cliente.getUserName()).isPresent()) {
                 Reserva reserva = new Reserva(fechaIni, fechaFin, numSimple, numDoble, cliente);
                 altaReserva(reserva, hotel);
+                repositorioHotel.actualizarHotel(hotel);
             return true;
         }
         return false;
@@ -112,6 +113,6 @@ public class ServicioHotel {
     public void altaReserva(Reserva reserva, Hotel hotel){
         repositorioReserva.guardarReserva(reserva);
         hotel.addReserva(reserva);
-        repositorioHotel.actualizarHotel(hotel);
+        //repositorioHotel.actualizarHotel(hotel);
     }
 }

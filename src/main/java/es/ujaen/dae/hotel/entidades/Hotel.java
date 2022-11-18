@@ -40,11 +40,9 @@ public class Hotel {
 
 
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "hotel_id_reservas_actuales")
     private List<Reserva> reservasActuales;
 
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "hotel_id_reservas_pasadas")
     private Set<Reserva> reservasPasadas;
 
     public Hotel(String nombre, Direccion direccion, int numDobl, int numSimp) {
