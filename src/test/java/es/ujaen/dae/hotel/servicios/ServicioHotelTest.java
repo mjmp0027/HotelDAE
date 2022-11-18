@@ -326,5 +326,6 @@ public class ServicioHotelTest {
         servicioHotel.cambioReserva(hotel);
 
         Assertions.assertThat(hotel.getReservasPasadas()).hasSize(2);
+        Assertions.assertThat(hotel.getReservasActuales()).hasSize(1);
     }
 }

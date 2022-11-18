@@ -47,4 +47,8 @@ public class RepositorioHotel {
     public void actualizarHotel(Hotel hotel){
         em.merge(hotel);
     }
+
+    public void cambioReservas(Hotel hotel){
+        hotel.cambioReservas();
+    }
 }

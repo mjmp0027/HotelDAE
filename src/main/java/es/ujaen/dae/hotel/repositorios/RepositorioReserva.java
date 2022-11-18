@@ -2,7 +2,6 @@ package es.ujaen.dae.hotel.repositorios;
 
 
 import es.ujaen.dae.hotel.entidades.Reserva;
-import es.ujaen.dae.hotel.entidades.ReservaPasada;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +19,6 @@ public class RepositorioReserva {
     public void guardarReserva(Reserva reserva) {
         em.persist(reserva);
     }
-    public void guardarReservaPasada(ReservaPasada reservaPasada){ em.persist(reservaPasada);}
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public Optional<Reserva> buscarReservaPorId(int id){

@@ -8,6 +8,7 @@ import es.ujaen.dae.hotel.repositorios.RepositorioHotel;
 import es.ujaen.dae.hotel.repositorios.RepositorioReserva;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -101,17 +102,9 @@ public class ServicioHotel {
         return false;
     }
 
-    //@Scheduled(cron = "0 0 3 * * * ?")
+    @Scheduled(cron = "0 0 3 * * * ?")
     public void cambioReserva(Hotel hotel) {
-        List<Reserva> reservasActuales;
-        reservasActuales = hotel.cambioReservas();
-        for (Reserva reservaActual : reservasActuales){
-            if (reservaActual.getFechaFin().isBefore(LocalDate.now())) {
-                ReservaPasada reservaPasada = new ReservaPasada(reservaActual);
-                repositorioReserva.guardarReservaPasada(reservaPasada);
-                hotel.cambioReserva(reservaPasada);
-            }
-        }
+        repositorioHotel.cambioReservas(hotel);
         repositorioHotel.actualizarHotel(hotel);
     }
 

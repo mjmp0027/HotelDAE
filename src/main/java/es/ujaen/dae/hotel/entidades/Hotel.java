@@ -37,13 +37,14 @@ public class Hotel {
     private int numDobl;
 
 
+
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "hotel_id_reservas_actuales")
     private List<Reserva> reservasActuales;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "hotel_id_reservas_pasadas")
-    private Set<ReservaPasada> reservasPasadas;
+    private Set<Reserva> reservasPasadas;
 
     public Hotel(String nombre, Direccion direccion, int numDobl, int numSimp) {
         this.nombre = nombre;
@@ -60,16 +61,17 @@ public class Hotel {
 
 
     //Trabajo Voluntario
-    public List<Reserva> cambioReservas() {
-        List<Reserva> list = new ArrayList<>();
-        list.addAll(reservasActuales);
-
-        return list;
+    public void cambioReservas() {
+        List<Reserva> reservasActu = new ArrayList<>();
+        for (Reserva reservaActual : reservasActuales){
+            if (reservaActual.getFechaFin().isBefore(LocalDate.now())) {
+                reservasPasadas.add(reservaActual);
+                reservasActu.add(reservaActual);
+            }
+        }
+        reservasActuales.removeAll(reservasActu);
     }
 
-    public void cambioReserva(ReservaPasada reservaPasada) {
-        reservasPasadas.add(reservaPasada);
-    }
 
     //Comprobamos la reserva por día
     private boolean comprobarReservaDia(LocalDate dia, int numDobl, int numSimp) {
