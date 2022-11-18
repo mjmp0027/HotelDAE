@@ -68,13 +68,14 @@ public class ServicioHotel {
         }
     }
     //Hacemos el login del cliente
-    @Transactional
+    //@Transactional
     public Optional<Cliente> loginCliente(@NotNull String userName, @NotNull String clave) {
         Optional<Cliente> clienteLogin = repositorioCliente.buscarPorUserName(userName)
                 .filter((cliente) -> cliente.claveValida(clave));
         return clienteLogin;
     }
     //Buscamos el hotel mediante direccion, fechas y tipo
+    //@Transactional
     public List<Hotel> buscarHoteles(Direccion direccion, LocalDate fechaIni, LocalDate fechaFin, int numDoble, int numSimple) {
         List<Hotel> listaHoteles = repositorioHotel.buscarHotelesPorDireccion(direccion);
         List<Hotel> listaHotelesDisp = new ArrayList<>();
@@ -103,12 +104,14 @@ public class ServicioHotel {
     }
 
     @Scheduled(cron = "0 0 3 * * * ?")
+    @Transactional
     public void cambioReserva(Hotel hotel) {
         repositorioHotel.cambioReservas(hotel);
         repositorioHotel.actualizarHotel(hotel);
     }
 
     //Metodo exclusivo para la comprobación del testCambioReserva()
+    @Transactional
     public void altaReserva(Reserva reserva, Hotel hotel){
         repositorioReserva.guardarReserva(reserva);
         hotel.addReserva(reserva);
