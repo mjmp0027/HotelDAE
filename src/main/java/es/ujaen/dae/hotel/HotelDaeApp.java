@@ -7,7 +7,8 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 @SpringBootApplication(scanBasePackages={
         "es.ujaen.dae.hotel.servicios",
-        "es.ujaen.dae.hotel.repositorios"
+        "es.ujaen.dae.hotel.repositorios",
+        "es.ujaen.dae.hotel.rest"
 })
 @EntityScan(basePackages="es.ujaen.dae.hotel.entidades")
 public class HotelDaeApp {
