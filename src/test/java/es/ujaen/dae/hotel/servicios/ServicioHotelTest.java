@@ -152,8 +152,8 @@ public class ServicioHotelTest {
         servicioHotel.altaHotel(hotel1, administrador);
         servicioHotel.altaHotel(hotel2, administrador);
 
-        List<Hotel> listaHoteles = servicioHotel.buscarHoteles(direccion1, fechaInicioBuscar, fechaFinBuscar, 1, 2);
-        Assertions.assertThat(listaHoteles).hasSize(1);
+        List<Hotel> listaHoteles = servicioHotel.buscarHoteles(direccion1.getCiudad(), fechaInicioBuscar, fechaFinBuscar, 1, 2);
+        Assertions.assertThat(listaHoteles).hasSize(2);
 
     }
 
@@ -185,7 +185,7 @@ public class ServicioHotelTest {
                 19);
         Direccion direccion2 = new Direccion(
                 "España",
-                "Jaen",
+                "Malaga",
                 "SanPablo",
                 21);
 
@@ -204,16 +204,16 @@ public class ServicioHotelTest {
         Cliente altaCliente = servicioHotel.altaCliente(cliente);
         Cliente loginCliente = servicioHotel.loginCliente(altaCliente.getUserName(), clave).orElseThrow(() -> new ClienteNoRegistrado());
 
-        List<Hotel> listaHoteles1 = servicioHotel.buscarHoteles(direccion1, fechaInicioBuscar, fechaFinBuscar, 8, 12);
+        List<Hotel> listaHoteles1 = servicioHotel.buscarHoteles(direccion1.getCiudad(), fechaInicioBuscar, fechaFinBuscar, 8, 12);
         Assertions.assertThat(listaHoteles1).hasSize(1);
         //Realizamos una reserva donde quitamos casi todas las habitaciones para facilitar
         servicioHotel.hacerReserva(loginCliente, fechaInicioBuscar, fechaFinBuscar, 8, 12, listaHoteles1.get(0));
 //        List<Hotel> listaHoteles2 = servicioHotel.buscarHoteles(direccion1, fechaInicioBuscar, fechaFinBuscar, 1, 1);
 //        Assertions.assertThat(listaHoteles2).hasSize(1);
         //Intentamos buscar hoteles pero esta vez no habrá habitaciones disponibles
-        Assertions.assertThatExceptionOfType(ReservaNoDisponible.class).isThrownBy(() -> servicioHotel.buscarHoteles(direccion1, fechaInicioBuscar, fechaFinBuscar, 5, 5));
+        Assertions.assertThatExceptionOfType(ReservaNoDisponible.class).isThrownBy(() -> servicioHotel.buscarHoteles(direccion1.getCiudad(), fechaInicioBuscar, fechaFinBuscar, 5, 5));
         //Intentamos buscar hoteles en una direccion donde no hay ningún hotel
-        Assertions.assertThatExceptionOfType(ReservaNoDisponible.class).isThrownBy(() -> servicioHotel.buscarHoteles(direccion2, fechaInicioBuscar, fechaFinBuscar, 1, 2));
+        Assertions.assertThatExceptionOfType(ReservaNoDisponible.class).isThrownBy(() -> servicioHotel.buscarHoteles(direccion2.getCiudad(), fechaInicioBuscar, fechaFinBuscar, 1, 2));
 
     }
 
@@ -266,12 +266,12 @@ public class ServicioHotelTest {
         Administrador administrador10 = servicioHotel.altaAdministrador(administrador1);
         servicioHotel.altaHotel(hotel, administrador10);
 
-        List<Hotel> listaHoteles1 = servicioHotel.buscarHoteles(direccionHotel, fechaInicioReserva1, fechaFinReserva1, 1, 2);
+        List<Hotel> listaHoteles1 = servicioHotel.buscarHoteles(direccionHotel.getCiudad(), fechaInicioReserva1, fechaFinReserva1, 1, 2);
         boolean reservaRealizada = servicioHotel.hacerReserva(loginCliente, fechaInicioReserva1, fechaFinReserva1, 1, 2, listaHoteles1.get(0));
 
         Assertions.assertThat(reservaRealizada).isTrue();
 
-        List<Hotel> listaHoteles2 = servicioHotel.buscarHoteles(direccionHotel, fechaInicioReserva2, fechaFinReserva2, 1, 2);
+        List<Hotel> listaHoteles2 = servicioHotel.buscarHoteles(direccionHotel.getCiudad(), fechaInicioReserva2, fechaFinReserva2, 1, 2);
         boolean reservaRealizada2 = servicioHotel.hacerReserva(altaCliente, fechaInicioReserva2, fechaFinReserva2, 1, 2, listaHoteles2.get(0));
 
         Assertions.assertThat(reservaRealizada2).isTrue();
@@ -289,7 +289,7 @@ public class ServicioHotelTest {
                 19);
 
         Hotel hotel = new Hotel(
-                "hotel",
+                "hotel1",
                 direccionHotel,
                 20,
                 30
@@ -334,7 +334,7 @@ public class ServicioHotelTest {
         servicioHotel.altaReserva(reserva2,hotel);
         servicioHotel.altaReserva(reserva3,hotel);
 
-        servicioHotel.cambioReserva(hotel);
+        servicioHotel.cambioReserva();
 
         Assertions.assertThat(hotel.getReservasPasadas()).hasSize(2);
         Assertions.assertThat(hotel.getReservasActuales()).hasSize(1);

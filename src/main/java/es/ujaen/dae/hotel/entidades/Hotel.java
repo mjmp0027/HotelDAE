@@ -39,7 +39,7 @@ public class Hotel {
 
 
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Reserva> reservasActuales;
 
     @OneToMany(fetch = FetchType.LAZY)

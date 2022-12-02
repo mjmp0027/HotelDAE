@@ -32,11 +32,11 @@ public class RepositorioHotel {
         em.persist(hotel);
     }
 
-    public List<Hotel> buscarHotelesPorDireccion(Direccion direccion) {
+    public List<Hotel> buscarHotelesPorDireccion(String ciudad) {
         List<Hotel> hoteles = new ArrayList<>();
         try {
-            Query q = em.createQuery("Select h from Hotel h where h.direccion=:direccion", Hotel.class);
-            q.setParameter("direccion", direccion);
+            Query q = em.createQuery("Select h from Hotel h where h.direccion.ciudad=:ciudad", Hotel.class);
+            q.setParameter("ciudad", ciudad);
             hoteles = q.getResultList();
         } catch (Exception e) {
             logger.log(Level.SEVERE, e.getMessage(), e);
@@ -46,6 +46,12 @@ public class RepositorioHotel {
 
     public void actualizarHotel(Hotel hotel){
         em.merge(hotel);
+    }
+
+    public List<Hotel> hoteles(){
+        List<Hotel> hoteles;
+        hoteles = em.createQuery("SELECT h FROM Hotel h", Hotel.class).getResultList();
+        return hoteles;
     }
 
     public void cambioReservas(Hotel hotel){

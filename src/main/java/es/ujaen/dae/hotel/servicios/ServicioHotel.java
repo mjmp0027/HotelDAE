@@ -76,8 +76,8 @@ public class ServicioHotel {
     }
     //Buscamos el hotel mediante direccion, fechas y tipo
     @Transactional
-    public List<Hotel> buscarHoteles(Direccion direccion, LocalDate fechaIni, LocalDate fechaFin, int numDoble, int numSimple) {
-        List<Hotel> listaHoteles = repositorioHotel.buscarHotelesPorDireccion(direccion);
+    public List<Hotel> buscarHoteles(String ciudad, LocalDate fechaIni, LocalDate fechaFin, int numDoble, int numSimple) {
+        List<Hotel> listaHoteles = repositorioHotel.buscarHotelesPorDireccion(ciudad);
         List<Hotel> listaHotelesDisp = new ArrayList<>();
         for (Hotel hotel : listaHoteles) {
             if (hotel.comprobarReserva(fechaIni, fechaFin, numDoble, numSimple))
@@ -103,9 +103,12 @@ public class ServicioHotel {
 
     @Scheduled(cron = "0 0 3 * * * ?")
     @Transactional
-    public void cambioReserva(Hotel hotel) {
-        repositorioHotel.cambioReservas(hotel);
-        repositorioHotel.actualizarHotel(hotel);
+    public void cambioReserva() {
+        List<Hotel> hoteles = repositorioHotel.hoteles();
+        for (Hotel hotel : hoteles) {
+            repositorioHotel.cambioReservas(hotel);
+            repositorioHotel.actualizarHotel(hotel);
+        }
     }
 
     //Metodo exclusivo para la comprobación del testCambioReserva()
