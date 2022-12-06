@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -72,6 +73,13 @@ public class ServicioHotel {
     public Optional<Cliente> loginCliente(@NotNull String userName, @NotNull String clave) {
         Optional<Cliente> clienteLogin = repositorioCliente.buscarPorUserName(userName)
                 .filter((cliente) -> cliente.claveValida(clave));
+        return clienteLogin;
+    }
+
+    @Transactional
+    public Optional<Cliente> verCliente(@NotBlank String userName) {
+        Optional<Cliente> clienteLogin = repositorioCliente.buscarPorUserName(userName);
+
         return clienteLogin;
     }
     //Buscamos el hotel mediante direccion, fechas y tipo
