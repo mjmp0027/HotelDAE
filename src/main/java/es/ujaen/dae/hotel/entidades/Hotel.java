@@ -54,6 +54,10 @@ public class Hotel {
         reservasPasadas = new HashSet<>();
     }
 
+
+
+    public Hotel(int id, String nombre, Direccion direccion, int numSimp, int numDobl) {}
+
     public void addReserva(Reserva reserva) {
         if(comprobarReserva(reserva.getFechaInicio(), reserva.getFechaFin(), reserva.getNumHabitacionesDobl(), reserva.getNumHabitacionesSimp())) {
             reservasActuales.add(reserva);
