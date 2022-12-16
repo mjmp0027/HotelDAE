@@ -10,8 +10,11 @@ public record DTOHotel(
         int numSimp,
         int numDobl) {
 
-    public DTOHotel(Hotel hotel){
+    public DTOHotel(Hotel hotel) {
         this(hotel.getId(), hotel.getNombre(), hotel.getDireccion(), hotel.getNumSimp(), hotel.getNumDobl());
     }
-    public Hotel aHotel(){return new Hotel(id,nombre,direccion,numSimp,numDobl);}
+
+    public Hotel aHotel() {
+        return new Hotel(id, nombre, direccion, numSimp, numDobl);
+    }
 }

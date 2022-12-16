@@ -1,6 +1,5 @@
 package es.ujaen.dae.hotel.seguridad;
 
-import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -19,7 +18,6 @@ public class ServicioSeguridadHotelDAE {
         return new BCryptPasswordEncoder();
     }
 
-    //FIXME
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         // Desactivar cualquier soporte de sesión
@@ -33,7 +31,7 @@ public class ServicioSeguridadHotelDAE {
         // Definir protección por URL
         httpSecurity.authorizeRequests().antMatchers(HttpMethod.POST, "/hoteldae/clientes").permitAll();
 
-        // Permitir el acceso de un cliente sólo a sus recursos asociados (datos personales, cuentas, tarjetas, etc.)
+
         httpSecurity.authorizeRequests().antMatchers("/hoteldae/clientes/{userName}/**").access("hasRole('CLIENTE') and #userName == principal.username");
 
         return httpSecurity.build();

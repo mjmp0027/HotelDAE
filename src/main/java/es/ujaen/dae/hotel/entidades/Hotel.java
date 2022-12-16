@@ -108,9 +108,6 @@ public class Hotel {
             }
             dia = dia.plusDays(1);
         }
-        //En el momento que alguna de las comprobaciones devuelva falso reservaDisponible se pone falso
-        //y no se vuele a poner a true, por lo que el método devolvería falso.
-        //Si el metodo devuelve true, reservaDisponible se mantiene en true
         return reservaDisponible;
     }
 }

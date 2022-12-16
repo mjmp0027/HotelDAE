@@ -11,19 +11,18 @@ public record DTOCliente(
         String contraseña,
         Direccion direccion,
         String tlf,
-        String email){
+        String email) {
 
-    public DTOCliente(Cliente cliente){
+    public DTOCliente(Cliente cliente) {
         this(cliente.getDni(),
-        cliente.getNombre(),
-        cliente.getUserName(),
-        "", cliente.getDireccion(),
+                cliente.getNombre(),
+                cliente.getUserName(),
+                "", cliente.getDireccion(),
                 cliente.getTlf(),
                 cliente.getEmail());
-        }
+    }
 
-        public Cliente aCliente(){
-        return new Cliente(dni,nombre,userName,contraseña,direccion,tlf,email);
-        }
+    public Cliente aCliente() {
+        return new Cliente(dni, nombre, userName, contraseña, direccion, tlf, email);
+    }
 }
-
