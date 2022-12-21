@@ -72,7 +72,7 @@ public class ControladorREST {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping
+    @PostMapping("/hoteles")
     public ResponseEntity<DTOHotel> altaHotel(@RequestBody DTOHotel hotel, @RequestBody DTOAdministrador administrador) {
         try {
             Hotel hotel1 = servicio.altaHotel(hotel.aHotel(), administrador.aAdministrador());
@@ -82,7 +82,7 @@ public class ControladorREST {
         }
     }
 
-    @PostMapping
+    @PostMapping("/hoteles/{ciudad}")
     ResponseEntity<List<DTOHotel>> buscarHoteles(String ciudad, LocalDate fechaIni, LocalDate fechaFin, int numDoble, int numSimple) {
         try {
             List<Hotel> listHoteles = servicio.buscarHoteles(ciudad, fechaIni, fechaFin, numDoble, numSimple);
@@ -92,7 +92,7 @@ public class ControladorREST {
         }
     }
 
-    @GetMapping("/clientes/{dni}")
+    @GetMapping("/clientes/{userName}")
     ResponseEntity<Boolean> hacerReserva(@RequestBody DTOCliente cliente, LocalDate fechaIni, LocalDate fechaFin, int numDoble, int numSimple, @RequestBody DTOHotel hotel) {
         try {
             servicio.hacerReserva(cliente.aCliente(), fechaIni, fechaFin, numDoble, numSimple, hotel.aHotel());

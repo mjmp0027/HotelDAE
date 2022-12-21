@@ -6,6 +6,7 @@ import es.ujaen.dae.hotel.entidades.Cliente;
 import es.ujaen.dae.hotel.entidades.Direccion;
 import es.ujaen.dae.hotel.entidades.Hotel;
 import es.ujaen.dae.hotel.excepciones.AdministradorYaExiste;
+import es.ujaen.dae.hotel.excepciones.ClienteNoRegistrado;
 import es.ujaen.dae.hotel.rest.dto.DTOCliente;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -17,7 +18,9 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.annotation.PostConstruct;
 import javax.validation.ConstraintViolationException;
@@ -65,11 +68,45 @@ public class ControladorRESTTest {
                 "657550655",
                 "mjmp0027gmail.com"
         );
-        ResponseEntity<DTOCliente> respuesta = restTemplate.postForEntity(
-                "/clientes",
-                cliente,
-                DTOCliente.class
-        );
-        Assertions.assertThat(respuesta.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        ResponseEntity<DTOCliente> respuestaLogin = restTemplate
+                .withBasicAuth(cliente.userName(), cliente.contraseña())
+                .getForEntity(
+                        "/clientes/{userName}",
+                        DTOCliente.class,
+                        cliente.userName()
+                );
+                Assertions.assertThat(respuestaLogin.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
+
+    @Test
+    public void testAltaYLoginCliente() {
+        String clave = "manuel82";
+        Direccion direccion = new Direccion(
+
+                "España",
+                "Jaen",
+                "SanJuan",
+                19);
+        DTOCliente cliente = new DTOCliente(
+                "12345678Q",
+                "Manuel Jesus",
+                "mjmp0027",
+                clave,
+                direccion,
+                "657550655",
+                "mjmp@0027.es"
+        );
+        ResponseEntity<DTOCliente> respuestaLogin = restTemplate
+                .withBasicAuth(cliente.userName(), cliente.contraseña())
+                .getForEntity(
+                        "/clientes/{userName}",
+                        DTOCliente.class,
+                        cliente.userName()
+                );
+        Assertions.assertThat(respuestaLogin.getStatusCode()).isEqualTo(HttpStatus.OK);
+        DTOCliente clienteLogin = respuestaLogin.getBody();
+        Assertions.assertThat(clienteLogin.userName()).isEqualTo(cliente.userName());
+
+    }
+
 }
