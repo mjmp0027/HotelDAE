@@ -92,10 +92,12 @@ public class ControladorREST {
         }
     }
 
-    @GetMapping("/clientes/{userName}")
-    ResponseEntity<Boolean> hacerReserva(@RequestBody DTOCliente cliente, LocalDate fechaIni, LocalDate fechaFin, int numDoble, int numSimple, @RequestBody DTOHotel hotel) {
+    @PostMapping("/clientes/{username}")
+    ResponseEntity<Boolean> hacerReserva(@PathVariable String username, LocalDate fechaIni, LocalDate fechaFin, int numDoble, int numSimple, @RequestBody DTOHotel hotel) {
         try {
-            servicio.hacerReserva(cliente.aCliente(), fechaIni, fechaFin, numDoble, numSimple, hotel.aHotel());
+            Optional<Cliente> cliente = servicio.verCliente(username);
+            if (cliente.isPresent())
+                servicio.hacerReserva(cliente.get(), fechaIni, fechaFin, numDoble, numSimple, hotel.aHotel());
         } catch (ReservaNoDisponible e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }

@@ -11,7 +11,11 @@ public record DTOHotel(
         int numDobl) {
 
     public DTOHotel(Hotel hotel) {
-        this(hotel.getId(), hotel.getNombre(), hotel.getDireccion(), hotel.getNumSimp(), hotel.getNumDobl());
+        this(hotel.getId(),
+                hotel.getNombre(),
+                hotel.getDireccion(),
+                hotel.getNumSimp(),
+                hotel.getNumDobl());
     }
 
     public Hotel aHotel() {
