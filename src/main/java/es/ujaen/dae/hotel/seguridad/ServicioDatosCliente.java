@@ -7,6 +7,10 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+/**
+ * Servicio que proporciona los datos del cliente
+
+ */
 
 public class ServicioDatosCliente implements UserDetailsService {
     @Autowired

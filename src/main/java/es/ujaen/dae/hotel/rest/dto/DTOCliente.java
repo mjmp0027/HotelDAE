@@ -3,6 +3,10 @@ package es.ujaen.dae.hotel.rest.dto;
 import es.ujaen.dae.hotel.entidades.Cliente;
 import es.ujaen.dae.hotel.entidades.Direccion;
 
+/**
+ * DTO para recopilación de datos de cliente
+
+ */
 
 public record DTOCliente(
         String dni,

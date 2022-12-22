@@ -1,6 +1,10 @@
 package es.ujaen.dae.hotel.rest.dto;
 
 import es.ujaen.dae.hotel.entidades.Administrador;
+/**
+ * DTO para recopilación de datos de administrador
+
+ */
 
 public record DTOAdministrador(
         String userName,

@@ -27,6 +27,11 @@ import javax.annotation.PostConstruct;
 import javax.validation.ConstraintViolationException;
 import java.time.LocalDate;
 import java.util.List;
+/**
+ * Test para controlador REST de clientes
+ *
+
+ */
 
 @SpringBootTest(classes = es.ujaen.dae.hotel.HotelDaeApp.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles(profiles = {"test"})
@@ -39,6 +44,9 @@ public class ControladorRESTTest {
     MappingJackson2HttpMessageConverter springBootJacksonConverter;
 
     TestRestTemplate restTemplate;
+    /**
+     * Crear un TestRestTemplate para las pruebas
+     */
 
     @PostConstruct
     void crearRestTemplateBuilder() {
@@ -48,6 +56,9 @@ public class ControladorRESTTest {
 
         restTemplate = new TestRestTemplate(restTemplateBuilder);
     }
+    /**
+     * Intento de creación de un cliente inválido
+     */
 
     @Test
     public void testAltaClienteInvalido() {
@@ -79,6 +90,9 @@ public class ControladorRESTTest {
                 );
                 Assertions.assertThat(respuestaLogin.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
+    /**
+     * test de alta y login cliente
+     */
 
     @Test
     public void testAltaYLoginCliente() {
@@ -89,6 +103,7 @@ public class ControladorRESTTest {
                 "Jaen",
                 "SanJuan",
                 19);
+        // Crear segundo cliente
         DTOCliente cliente = new DTOCliente(
                 "12345678Q",
                 "Manuel Jesus",
@@ -110,6 +125,7 @@ public class ControladorRESTTest {
         Assertions.assertThat(clienteLogin.userName()).isEqualTo(cliente.userName());
 
     }
+
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)

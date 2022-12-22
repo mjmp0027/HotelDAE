@@ -7,6 +7,10 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import java.util.Set;
+/**
+ * Test unitario para clase Cliente
+
+ */
 
 public class ClienteTest {
     public ClienteTest(){

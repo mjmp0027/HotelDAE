@@ -23,6 +23,13 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/hoteldae")
+
+/**
+ * Controlador REST para los servicios del hotel
+ *
+
+ */
+
 public class ControladorREST {
 
     @Autowired

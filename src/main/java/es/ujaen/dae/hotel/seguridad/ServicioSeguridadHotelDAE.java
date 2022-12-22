@@ -8,6 +8,10 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+/**
+ * Servicio que proporciona los datos de seguridad del hotel
+
+ */
 
 @Configuration
 public class ServicioSeguridadHotelDAE {

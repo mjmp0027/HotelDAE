@@ -2,6 +2,10 @@ package es.ujaen.dae.hotel.rest.dto;
 
 import es.ujaen.dae.hotel.entidades.Direccion;
 import es.ujaen.dae.hotel.entidades.Hotel;
+/**
+ * DTO para recopilación de datos de hotel
+
+ */
 
 public record DTOHotel(
         int id,
