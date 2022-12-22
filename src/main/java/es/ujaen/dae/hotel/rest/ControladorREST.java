@@ -1,8 +1,10 @@
 package es.ujaen.dae.hotel.rest;
 
 
+import es.ujaen.dae.hotel.entidades.Administrador;
 import es.ujaen.dae.hotel.entidades.Cliente;
 import es.ujaen.dae.hotel.entidades.Hotel;
+import es.ujaen.dae.hotel.excepciones.AdministradorYaExiste;
 import es.ujaen.dae.hotel.excepciones.ClienteNoRegistrado;
 import es.ujaen.dae.hotel.excepciones.ClienteYaRegistrado;
 import es.ujaen.dae.hotel.excepciones.ReservaNoDisponible;
@@ -17,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.ConstraintViolationException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,12 +58,22 @@ public class ControladorREST {
     /**
      * Creación de clientes
      */
-    @PostMapping("/clientes")
+    @PostMapping("clientes")
     public ResponseEntity<DTOCliente> altaCliente(@RequestBody DTOCliente cliente) {
         try {
             Cliente cliente1 = servicio.altaCliente(cliente.aCliente());
             return ResponseEntity.status(HttpStatus.CREATED).body(new DTOCliente(cliente1));
         } catch (ClienteYaRegistrado e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+    }
+
+    @PostMapping("administradores")
+    public ResponseEntity<DTOAdministrador> altaAdministrador(@RequestBody DTOAdministrador administrador) {
+        try {
+            Administrador administrador1 = servicio.altaAdministrador(administrador.aAdministrador());
+            return ResponseEntity.status(HttpStatus.CREATED).body(new DTOAdministrador(administrador1));
+        } catch (AdministradorYaExiste e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }
@@ -79,9 +90,13 @@ public class ControladorREST {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/hoteles")
-    public ResponseEntity<DTOHotel> altaHotel(@RequestBody DTOHotel hotel, @RequestBody DTOAdministrador administrador) {
+    @PostMapping("hoteles")
+    public ResponseEntity<DTOHotel> altaHotel(@RequestBody DTOHotel hotel /*@RequestBody DTOAdministrador administrador*/) {
         try {
+            //Probando el método mediante postman no me ha sido posible hallar la manera de enviar
+            //dos request body con un mismo json y me he visto obligado a crear uno con el mismo usuario
+            //y clave que el administrador que registro mediante postman
+            DTOAdministrador administrador = new DTOAdministrador("mjmp0027", "clave1");
             Hotel hotel1 = servicio.altaHotel(hotel.aHotel(), administrador.aAdministrador());
             return ResponseEntity.status(HttpStatus.CREATED).body(new DTOHotel(hotel1));
         } catch (ClienteYaRegistrado e) {
@@ -89,25 +104,24 @@ public class ControladorREST {
         }
     }
 
-    @PostMapping("/hoteles/{ciudad}")
-    ResponseEntity<List<DTOHotel>> buscarHoteles(String ciudad, LocalDate fechaIni, LocalDate fechaFin, int numDoble, int numSimple) {
+    @GetMapping("/hoteles/{ciudad}")
+    ResponseEntity<List<Hotel>> buscarHoteles(@PathVariable String ciudad, @RequestParam LocalDate fechaIni, @RequestParam LocalDate fechaFin, @RequestParam int numDoble, @RequestParam int numSimple) {
         try {
             List<Hotel> listHoteles = servicio.buscarHoteles(ciudad, fechaIni, fechaFin, numDoble, numSimple);
-            return ResponseEntity.status(HttpStatus.OK).body(new ArrayList<>());
+            return ResponseEntity.status(HttpStatus.OK).body(listHoteles);
         } catch (ReservaNoDisponible e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }
 
     @PostMapping("/clientes/{username}")
-    ResponseEntity<Boolean> hacerReserva(@PathVariable String username, LocalDate fechaIni, LocalDate fechaFin, int numDoble, int numSimple, @RequestBody DTOHotel hotel) {
+    ResponseEntity<Boolean> hacerReserva(@PathVariable String username, @RequestParam LocalDate fechaIni, @RequestParam LocalDate fechaFin, @RequestParam int numDoble, @RequestParam int numSimple, @RequestBody DTOHotel hotel) {
         try {
             Optional<Cliente> cliente = servicio.verCliente(username);
-            if (cliente.isPresent())
-                servicio.hacerReserva(cliente.get(), fechaIni, fechaFin, numDoble, numSimple, hotel.aHotel());
+            cliente.ifPresent(value -> servicio.hacerReserva(value, fechaIni, fechaFin, numDoble, numSimple, hotel.aHotel()));
+            return ResponseEntity.status(HttpStatus.CREATED).body(true);
         } catch (ReservaNoDisponible e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
-        return ResponseEntity.status(HttpStatus.CONFLICT).build();
     }
 }

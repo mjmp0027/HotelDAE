@@ -2,9 +2,9 @@ package es.ujaen.dae.hotel.rest.dto;
 
 import es.ujaen.dae.hotel.entidades.Direccion;
 import es.ujaen.dae.hotel.entidades.Hotel;
+
 /**
  * DTO para recopilación de datos de hotel
-
  */
 
 public record DTOHotel(
@@ -23,6 +23,6 @@ public record DTOHotel(
     }
 
     public Hotel aHotel() {
-        return new Hotel(id, nombre, direccion, numSimp, numDobl);
+        return new Hotel(nombre, direccion, numSimp, numDobl);
     }
 }

@@ -27,6 +27,7 @@ public class Hotel {
     @NotBlank
     private String nombre;
 
+
     @Embedded
     @NotNull
     private Direccion direccion;
@@ -55,8 +56,6 @@ public class Hotel {
     }
 
 
-
-    public Hotel(int id, String nombre, Direccion direccion, int numSimp, int numDobl) {}
 
     public void addReserva(Reserva reserva) {
         if(comprobarReserva(reserva.getFechaInicio(), reserva.getFechaFin(), reserva.getNumHabitacionesDobl(), reserva.getNumHabitacionesSimp())) {

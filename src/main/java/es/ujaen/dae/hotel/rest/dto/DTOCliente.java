@@ -5,7 +5,6 @@ import es.ujaen.dae.hotel.entidades.Direccion;
 
 /**
  * DTO para recopilación de datos de cliente
-
  */
 
 public record DTOCliente(

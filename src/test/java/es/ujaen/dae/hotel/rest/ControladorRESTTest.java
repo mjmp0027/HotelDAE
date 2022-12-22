@@ -1,14 +1,8 @@
 package es.ujaen.dae.hotel.rest;
 
 
-import es.ujaen.dae.hotel.entidades.Administrador;
-import es.ujaen.dae.hotel.entidades.Cliente;
 import es.ujaen.dae.hotel.entidades.Direccion;
-import es.ujaen.dae.hotel.entidades.Hotel;
-import es.ujaen.dae.hotel.excepciones.AdministradorYaExiste;
-import es.ujaen.dae.hotel.excepciones.ClienteNoRegistrado;
 import es.ujaen.dae.hotel.rest.dto.DTOCliente;
-import es.ujaen.dae.hotel.rest.dto.DTOHotel;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +13,9 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.annotation.PostConstruct;
-import javax.validation.ConstraintViolationException;
-import java.time.LocalDate;
 import java.util.List;
 /**
  * Test para controlador REST de clientes
@@ -126,45 +116,6 @@ public class ControladorRESTTest {
 
     }
 
-
-    @Test
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void testBuscarHoteles(){
-        Direccion direccion1 = new Direccion(
-                "España",
-                "Jaen",
-                "SanJuan",
-                19);
-        Direccion direccion2 = new Direccion(
-                "España",
-                "Jaen",
-                "SanPablo",
-                20);
-
-        DTOHotel hotel1 = new DTOHotel(
-                1,
-                "hotel1",
-                direccion1,
-                20,
-                30);
-        Hotel hotel2 = new Hotel(
-                "hotel2",
-                direccion2,
-                20,
-                30);
-
-
-        LocalDate fechaInicioBuscar = LocalDate.of(2022, 10, 1);
-        LocalDate fechaFinBuscar = LocalDate.of(2022, 10, 9);
-
-
-        Administrador administrador = new Administrador("cgr", "clave2");
-        DTOHotel DTOHotel = restTemplate.postForEntity(
-                "/hoteles",
-                hotel1,
-                es.ujaen.dae.hotel.rest.dto.DTOHotel.class).getBody();
-
-        Assertions.assertThat(DTOHotel.nombre()).isEqualTo(hotel1.nombre());
-    }
+    //mayoría de test realizados con PostMan
 
 }
